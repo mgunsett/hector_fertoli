@@ -232,7 +232,10 @@ export default function Hero() {
                 className="player-name"
                 as="span"
                 display="block"
-                fontFamily='"Dela Gothic One", sans-serif'
+                fontFamily='Nippo'
+                fontWeight="bold"
+                letterSpacing="2px"
+                textTransform="uppercase"
                 fontSize={{ base: '12vw', md: '16vw', lg: '6vw' }}
                 color="brand.amber"
                 lineHeight={0.9}
@@ -248,7 +251,8 @@ export default function Hero() {
               ref={line2Ref}
               as="span"
               display="block"
-              fontFamily='"Dela Gothic One", sans-serif'
+              fontFamily='Nippo'
+              fontWeight="bold"
               fontSize={{ base: '11.6vw', md: '16vw', lg: '5vw' }}
               letterSpacing="2px"
               color="transparent"

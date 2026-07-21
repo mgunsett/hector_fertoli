@@ -37,8 +37,8 @@ import ledsports from '@assets/contact3.webp'
 import moon from '@assets/contact4.webp'
 
 
-const name = 'MATIAS'
-const fullName = 'DI BENEDETTO'
+const name = 'HECTOR'
+const fullName = 'FERTOLI'
 
 export const playerData = {
   name,
@@ -144,7 +144,7 @@ export const playerData = {
       id: 'v1',
       instagramId: 'DS3kqlVjokC',
       title: 'Highlight 2025',
-      fullTitle: 'Matias Di Benedetto | Jugadas destacadas 2025',
+      fullTitle: 'Hector Fertoli | Jugadas destacadas 2025',
       season: 'Highlight 2025',
       league: 'LIGA 1 2025',
       thumbnail: image7,
@@ -155,7 +155,7 @@ export const playerData = {
       id: 'v2',
       instagramId: 'DPANDAIjS8S',
       title: 'Gol y jugadas',
-      fullTitle: 'Matias Di Benedetto | Compilado de goles',
+      fullTitle: 'Hector Fertoli | Compilado de goles',
       season: 'Gol y jugadas',
       league: 'LIGA 1 2025',
       thumbnail: image5,
@@ -166,7 +166,7 @@ export const playerData = {
       id: 'v3',
       instagramId: 'C1iDaZ6uAYa',
       title: 'Highlight 2023',
-      fullTitle: 'Matias Di Benedetto | Asistencias y juego',
+      fullTitle: 'Hector Fertoli | Asistencias y juego',
       season: 'Highlight 2023',
       league: 'LIGA 1 2023',
       thumbnail: image2,
@@ -178,16 +178,16 @@ export const playerData = {
 
 
   gallery: [
-    { id: 1, src: image1, alt: 'Nicolas Silva', caption: 'Cusco FC', category: 'Partido', aspect: 'wide' },
-    { id: 2, src: image2, alt: 'Nicolas Silva', caption: 'Cusco FC',    category: 'Festejo', aspect: 'tall' },
-    { id: 3, src: image3, alt: 'Nicolas Silva', caption: 'Cusco FC', category: 'Entrenamiento', aspect: 'square' },
-    { id: 4, src: image4, alt: 'Nicolas Silva', caption: 'Cusco FC',     category: 'Partido', aspect: 'wide' },
-    { id: 5, src: image5, alt: 'Nicolas Silva', caption: 'Cusco FC',   category: 'Equipo',  aspect: 'wide' },
-    { id: 6, src: image6, alt: 'Nicolas Silva', caption: 'Cusco FC',       category: 'Retrato', aspect: 'tall' },
-    { id: 7, src: image7, alt: 'Nicolas Silva', caption: 'Cusco FC', category: 'Partido', aspect: 'wide' },
-    { id: 8, src: image8, alt: 'Nicolas Silva', caption: 'Cusco FC',     category: 'Partido', aspect: 'wide' },
-    { id: 9, src: image9, alt: 'Nicolas Silva', caption: 'Cusco FC', category: 'Partido', aspect: 'wide' },
-    { id: 10, src: image10, alt: 'Nicolas Silva', caption: 'Cusco FC',     category: 'Partido', aspect: 'wide' },
+    { id: 1, src: image1, alt: 'Hector Fertoli', caption: 'Cusco FC', category: 'Partido', aspect: 'wide' },
+    { id: 2, src: image2, alt: 'Hector Fertoli', caption: 'Cusco FC',    category: 'Festejo', aspect: 'tall' },
+    { id: 3, src: image3, alt: 'Hector Fertoli', caption: 'Cusco FC', category: 'Entrenamiento', aspect: 'square' },
+    { id: 4, src: image4, alt: 'Hector Fertoli', caption: 'Cusco FC',     category: 'Partido', aspect: 'wide' },
+    { id: 5, src: image5, alt: 'Hector Fertoli', caption: 'Cusco FC',   category: 'Equipo',  aspect: 'wide' },
+    { id: 6, src: image6, alt: 'Hector Fertoli', caption: 'Cusco FC',       category: 'Retrato', aspect: 'tall' },
+    { id: 7, src: image7, alt: 'Hector Fertoli', caption: 'Cusco FC', category: 'Partido', aspect: 'wide' },
+    { id: 8, src: image8, alt: 'Hector Fertoli', caption: 'Cusco FC',     category: 'Partido', aspect: 'wide' },
+    { id: 9, src: image9, alt: 'Hector Fertoli', caption: 'Cusco FC', category: 'Partido', aspect: 'wide' },
+    { id: 10, src: image10, alt: 'Hector Fertoli', caption: 'Cusco FC',     category: 'Partido', aspect: 'wide' },
 
   ],
 
@@ -196,8 +196,8 @@ export const playerData = {
       label: 'Instagram',
       icon: FaInstagram,
       iconBg: FaInstagram,
-      handle: '@mati.dibenedetto',
-      url: 'https://www.instagram.com/mati.dibenedetto/',
+      handle: '@hector.fertoli',
+      url: 'https://www.instagram.com/hector.fertoli/',
       hoverColor: '#E1306C',
       hoverGradient: 'insta-gradient',
     },
@@ -205,8 +205,8 @@ export const playerData = {
       label: 'TransferMarkt',
       image: transfermkt,
       iconBg: IoMdStats,
-      handle: '/matias-di-benedetto',
-      url: 'https://www.transfermarkt.com.ar/matias-di-benedetto/profil/spieler/441344',
+      handle: '/hector-fertoli',
+      url: 'https://www.transfermarkt.com.ar/hector-fertoli/profil/spieler/441344',
       hoverColor: '#2e73f2',
     },
   ],
