@@ -3,8 +3,16 @@ import { Box, Flex, Text, HStack, VStack } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { gsap } from 'gsap'
 import { playerData } from '../../data/playerData'
+import { NavbarBar } from './NavbarBar'
+import { NavbarSplit } from './NavbarSplit'
 
 const MotionBox = motion(Box)
+
+// Diseño del navbar:
+//  'clasico' → cápsula flotante glass centrada + card desplegable mobile (original)
+//  'barra'   → barra full-width transparente→sólida, links con subrayado + overlay fullscreen mobile
+//  'split'   → barra con logo centrado y links a los lados + drawer lateral mobile
+const NAV_DESIGN = 'split'
 
 const navLinks = [
   { label: 'Home', href: '#hero'},
@@ -29,7 +37,7 @@ function scrollTo(href) {
   }
 }
 
-export default function Navbar() {
+function NavbarClassic() {
   const [scrolled, setScrolled]   = useState(false)
   const [menuOpen, setMenuOpen]   = useState(false)
   const navRef                    = useRef(null)
@@ -84,7 +92,7 @@ export default function Navbar() {
       >
         {/* Logo */}
         <Text
-          fontFamily='"Dela Gothic One", sans-serif'
+          fontFamily='heading'
           fontSize="2xl"
           letterSpacing="wider"
           color="brand.amber"
@@ -108,7 +116,7 @@ export default function Navbar() {
               px={4}
               py={2}
               borderRadius="10px"
-              fontFamily='"Dela Gothic One", sans-serif'
+              fontFamily='heading'
               fontSize="2xs"
               fontWeight="100"
               letterSpacing="wider"
@@ -263,4 +271,11 @@ export default function Navbar() {
       </AnimatePresence>
     </Box>
   )
+}
+
+// Selector: renderiza la variante según NAV_DESIGN ('clasico' | 'barra' | 'split')
+export default function Navbar() {
+  if (NAV_DESIGN === 'barra') return <NavbarBar />
+  if (NAV_DESIGN === 'split') return <NavbarSplit />
+  return <NavbarClassic />
 }

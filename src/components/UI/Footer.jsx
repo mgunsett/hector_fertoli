@@ -60,7 +60,7 @@ export default function Footer() {
           style={{ textDecoration: 'none' }}
         >
           <Text
-            fontFamily='"Dela Gothic One", sans-serif'
+            fontFamily='heading'
             fontWeight="bold"
             textTransform="uppercase"
             fontSize={{ base: '46px', md: '36px' }}
@@ -68,7 +68,7 @@ export default function Footer() {
             color="brand.amber"
           >
             {playerData.initials}
-            <Box as="span" color="brand.gray2" ml="1px">_</Box>
+            <Box as="span" color="brand.dorado" ml="1px">_</Box>
           </Text>
         </Box>
 
@@ -92,10 +92,10 @@ export default function Footer() {
             _hover={{ borderColor: 'rgba(232,213,163,0.44)', color: 'rgba(232,213,163,0.5)' }}
             transition="color 0.3s"
             fontSize="14px"
-            fontFamily='"Dela Gothic One", sans-serif'
+            fontFamily='heading'
             ml="2px"
             >
-              Matias Gunsett <LiaLaptopCodeSolid style={{ marginLeft: '0px', display: 'inline-block', verticalAlign: 'middle', fontSize: '20px', color: devCream }} />
+              Matias Gunsett <LiaLaptopCodeSolid style={{ marginLeft: '0px', display: 'inline-block', verticalAlign: 'middle', fontSize: '22px', color: devCream }} />
             </Link>
           </Text>
       </Flex>

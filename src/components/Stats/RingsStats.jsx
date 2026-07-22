@@ -61,9 +61,9 @@ function RingsGrid() {
   return (
     <SimpleGrid
       ref={gridRef}
-      columns={{ base: 2, sm: 3 }}
-      spacingX={{ base: 4, md: 6 }}
-      spacingY={{ base: 6, md: 8 }}
+      columns={{ base: 3, sm: 3 }}
+      spacingX={{ base: 2, md: 6 }}
+      spacingY={{ base: 8, md: 8 }}
     >
       {playerData.stats.map((s, i) => (
         <Box key={s.label} className="ring-item" textAlign="center">

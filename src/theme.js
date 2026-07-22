@@ -1,20 +1,7 @@
 import { extendTheme } from '@chakra-ui/react'
 
-// ══════════════════════════════════════════════════════════════════
-// Paletas de marca — Universitario de Deportes
-// Basadas en el escudo (granate #9E1B1E sobre crema) y las camisetas:
-// titular crema con acentos granate / alterna granate con bastones.
-//
-// Los nombres de los tokens se conservan (amber, dark, bone, etc.)
-// para que todos los componentes funcionen sin cambios: lo que antes
-// era "dorado" ahora es el granate de la U, y "bone/boneWarm" pasan
-// a ser el texto principal y el crema del escudo.
-// ══════════════════════════════════════════════════════════════════
 
-// ─── PALETA OSCURA — negro cálido + arena + vino apagado ───────────
-// Tonalidades editoriales: arena/crema como acento principal, vino
-// desaturado para números y destacados, y el marrón rosado de la
-// camiseta alternativa como detalle en hovers.
+// ─── PALETA OSCURA — 
 const brandDark = {
   brown:      '#171514', // base casi negra cálida neutra
   brownDark:  '#000000', // negro profundo
@@ -38,7 +25,7 @@ const brandDark = {
   bgRef:      '#b0857321', // bg de hover en cajas (guiño camiseta alterna)
 }
 
-// ─── PALETA CLARA — inspirada en la camiseta titular crema ─────────
+// ─── PALETA CLARA — 
 const brandLight = {
   brown:      '#FCF8EC', // superficie clara (tarjetas/nodos)
   brownDark:  '#EFE6CF', // crema profundo (sombras suaves)
@@ -62,12 +49,37 @@ const brandLight = {
   bgRef:      '#9e1b1e12', // bg de hover en cajas
 }
 
-// Elegí la paleta de la landing:
-//  'dark'  → fondo oscuro granate, acentos rojo U + crema
-//  'light' → fondo crema titular, acentos granate del escudo
-const PALETTE = 'dark'
+// ─── PALETA NEÓN — 
+const brandNeon = {
+  brown:      '#0D0F0A', // base negra cálida verdosa
+  brownDark:  '#000000', // negro profundo
+  brownLight: '#242A1C', // sombra olivácea oscura
+  amber:      '#B4F32A', // verde lima neón (bordes/títulos) — acento principal
+  amber2:     '#b4f32a8e',
+  amberDark:  '#7FA800', // lima oliva oscuro
+  amberLight: '#b4f32a40', // lima translúcido (bordes suaves)
+  dorado:     '#FF2E9A', // magenta neón (acentos destacados)
+  orange:     '#FF3DA6', // rosa camiseta (hover botones)
+  orangeDark: '#D11E7E', // magenta oscuro
+  orangeLight:'#FF6EC7', // rosa claro
+  dark:       '#0C0E0A9f', // fondo casi negro cálido (mantener alpha)
+  dark3:      '#0C0E0Aa1',
+  dark2:      '#5A6650', // divisores oliváceos neutros
+  gray:       '#98A388', // lima-gris apagado (texto secundario)
+  gray2:      '#4A5C2E', // verde apagado (números grandes/relleno)
+  bone:       '#FFFFFF', // texto principal
+  boneWarm:   '#E4FF8A', // amarillo lima claro (detalles)
+  rec:        '#FF2D55', // rojo-rosa del indicador REC
+  bgRef:      '#b4f32a14', // bg de hover en cajas (guiño verde neón)
+}
 
-const brand = PALETTE === 'light' ? brandLight : brandDark
+// Elegí la paleta de la landing:
+const PALETTE = 'neon'
+
+const brand =
+  PALETTE === 'light' ? brandLight :
+  PALETTE === 'neon'  ? brandNeon  :
+  brandDark
 
 // Colores de la firma del desarrollador (crédito en el footer)
 const dev = {
@@ -78,9 +90,9 @@ const dev = {
 const theme = extendTheme({
   colors: { brand, dev },
   fonts: {
-    heading:   `'Bebas Neue', sans-serif`,
-    body:      `'Barlow', sans-serif`,
-    mono:      `'Barlow Condensed', sans-serif`,
+    heading:   'Nippo',
+    body:      `Nippo`,
+    mono:      `Nippo`,
   },
   styles: {
     global: {

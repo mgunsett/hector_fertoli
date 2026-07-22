@@ -152,7 +152,7 @@ export function OverallRating({ value }) {
     <Box textAlign="center" mt={6}>
       <Text ref={numRef}
         fontFamily="heading"
-        fontSize={{ base: '46px', md: '70px' }}
+        fontSize={{ base: '80px', md: '70px' }}
         color="brand.gray2" lineHeight="1"
       >
         {value}
@@ -267,7 +267,7 @@ export function SeasonColumn({ items }) {
           border="1px solid"
           borderColor="brand.amber"
           borderRadius="10px"
-          p={{ base: 3, lg: 3.5 }}
+          p={{ base: 4, lg: 3.5 }}
           bg="brand.dark"
           transition="border-color 0.3s, background 0.3s, transform 0.3s"
           role="group"

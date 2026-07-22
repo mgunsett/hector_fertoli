@@ -8,12 +8,12 @@ import polaco1 from '@assets/polaco1.webp'
 import argentina from '@assets/argentina.webp'
 import universitario from '@assets/escudo_univ.webp'
 //Escudos trayectoria
-import escudoAlmagro from '@assets/escudos/escudo_almagro.webp'
-import escudoCentralCordoba from '@assets/escudos/escudo_centralcordoba.webp'
-import escudoTemuco from '@assets/escudos/escudo_temuco.webp'
-import escudoUniMardel from '@assets/escudos/escudo_unimardel.webp'
-import escudoVillaSanCarlos from '@assets/escudos/escudo_villasancarlos.webp'
-import escudoGimnasiaJujuy from '@assets/escudos/escudo_gimnasiajujuy.webp'
+import escudoHuracan from '@assets/escudos/escudo_huracan.png'
+import escudoNewells from '@assets/escudos/escudo_newells.webp'
+import escudoRacing from '@assets/escudos/escudo_racing.webp'
+import escudoSanlorenzo from '@assets/escudos/escudo_sanlorenzo.webp'
+import escudoTalleres from '@assets/escudos/escudo_talleres.webp'
+import escudoTigre from '@assets/escudos/escudo_tigre.webp'
 //Gallery
 import image1 from '@assets/gallery/image1.webp'
 import image2 from '@assets/gallery/image2.webp'
@@ -25,6 +25,18 @@ import image7 from '@assets/gallery/image7.webp'
 import image8 from '@assets/gallery/image8.webp'
 import image9 from '@assets/gallery/image9.webp'
 import image10 from '@assets/gallery/image10.webp'
+import image11 from '@assets/gallery/image11.webp'
+import image12 from '@assets/gallery/image12.webp'
+import image13 from '@assets/gallery/image13.webp'
+import image14 from '@assets/gallery/image14.webp'
+import image15 from '@assets/gallery/image15.webp'
+import image16 from '@assets/gallery/image16.webp'
+import image17 from '@assets/gallery/image17.webp'
+import image18 from '@assets/gallery/image18.webp'
+import image19 from '@assets/gallery/image19.webp'
+import image20 from '@assets/gallery/image20.webp'
+import image21 from '@assets/gallery/image21.webp'  
+import image22 from '@assets/gallery/image22.webp'
 //Video
 import photoGraph from '@assets/perfil_video.webp'
 //Prensa
@@ -45,17 +57,17 @@ export const playerData = {
   fullName,
   initials: `${name[0]}${fullName[0]}`,
   displayName: `${name} ${fullName}`,
-  number: 5,
-  position: 'Defensa Central',
-  positionShort: 'DC',
+  number: 8,
+  position: 'Mediocampista',
+  positionShort: 'MC',
   nationality: 'Argentina',
   nationalityFlag: argentina,
-  age: 33,
-  height: '1.84m',
-  weight: '80kg',
+  age: 31,
+  height: '1.75m',
+  weight: '67kg',
   foot: 'Izquierdo',
-  birthDate: '19 / 11 / 1992',
-  birthPlace: 'Jose Marmol, Argentina',
+  birthDate: '03 / 12 / 1994  ',
+  birthPlace: 'El Trébol, Argentina',
   currentClub: 'Universitario',
   logoCurrentClub: universitario,
   image: polaco1,
@@ -63,9 +75,9 @@ export const playerData = {
 
   stats: [
     { label: 'Velocidad',      value: 90 },
-    { label: 'Defensa',     value: 94 },
-    { label: 'Regate',         value: 86 },
-    { label: 'Pases Completos',    value: 87 },
+    { label: 'Remate',     value: 84 },
+    { label: 'Regate',         value: 88 },
+    { label: 'Pases Completos',    value: 91 },
     { label: 'Presión Alta',   value: 85 },
     { label: 'Visión de Juego',value: 89 },
   ],
@@ -84,56 +96,56 @@ export const playerData = {
     {
       name:    'Universitario',
       country: 'Perú',
-      years:   '2023 — Actualidad',
+      years:   '2026 — Actualidad',
       logo:    universitario,
-      titles:  ['Campeon de la Liga 1 - 2023', 'Campeon de la Liga 1 - 2024', 'Campeon de la Liga 1 - 2025'],
-      info:    '',
+      titles:  [],
+      info:    'Préstamo',
     },
     {
-      name:    'Central Córdoba',
+      name:    'C.A Tigre',
       country: 'Argentina',
-      years:   '2022',
-      logo:    escudoCentralCordoba,
+      years:   '2025',
+      logo:    escudoTigre,
       titles:  [],
-      info:    '',
+      info:    'Préstamo',
     },
     {
-      name:    'Deportes Temuco',
-      country: 'Chile',
-      years:   '2019 — 2022',
-      logo:    escudoTemuco,
-      titles:  [],
-      info:    '',
-    },
-    {
-      name:    'Gimnasia y Esgrima de Jujuy',
+      name:    'C.A Huracán',
       country: 'Argentina',
-      years:   '2018',
-      logo:    escudoGimnasiaJujuy,
+      years:   '2023 — 2024',
+      logo:    escudoHuracan,
       titles:  [],
-      info:    'Prestamo',
+      info:    'Préstamo',
     },
     {
-      name:    'Almagro',
+      name:    'Talleres de Córdoba',
       country: 'Argentina',
-      years:   '2015 — 2018',
-      logo:    escudoAlmagro,
+      years:   '2021 — 2022',
+      logo:    escudoTalleres,
+      titles:  [],
+      info:    'Préstamo',
+    },
+    {
+      name:    'Racing Club',
+      country: 'Argentina',
+      years:   '2020 — Actualidad',
+      logo:    escudoRacing,
+      titles:  ['Supercopa Internacional 2023'],
+      info:    '',
+    },
+    {
+      name:    'San Lorenzo de Almagro',
+      country: 'Argentina',
+      years:   '2019',
+      logo:    escudoSanlorenzo,
       titles:  [],
       info:    '',
     },
     {
-      name:    'Villa San Carlos',
-      country: 'Argentina',
-      years:   '2014 — 2015',
-      logo:    escudoVillaSanCarlos,
-      titles:  [],
-      info:    '',
-    },
-    {
-      name:    'C.A Unión de Mar del Plata',
+      name:    'Newell\'s Old Boys',
       country: 'Argentina',
       years:   '2014',
-      logo:    escudoUniMardel,
+      logo:    escudoNewells,
       titles:  [],
       info:    '',
     },
@@ -141,36 +153,37 @@ export const playerData = {
 
   videos: [
     {
-      id: 'v1',
-      instagramId: 'DS3kqlVjokC',
-      title: 'Highlight 2025',
-      fullTitle: 'Hector Fertoli | Jugadas destacadas 2025',
-      season: 'Highlight 2025',
-      league: 'LIGA 1 2025',
-      thumbnail: image7,
-      cover: image7,
-      category: 'Goles',
-    },
-    {
       id: 'v2',
-      instagramId: 'DPANDAIjS8S',
-      title: 'Gol y jugadas',
-      fullTitle: 'Hector Fertoli | Compilado de goles',
-      season: 'Gol y jugadas',
+      instagramId: 'DYqG3t8xDzY',
+      title: 'Highlight \'26',
+      fullTitle: 'Hector Fertoli | Jugadas destacadas \'26',
+      season: 'Highlight \'26',
       league: 'LIGA 1 2025',
-      thumbnail: image5,
-      cover: image5,
-      category: 'Goles',
+      thumbnail: image8,
+      cover: image8,
+      category: 'Universitario',
     },
     {
       id: 'v3',
-      instagramId: 'C1iDaZ6uAYa',
-      title: 'Highlight 2023',
+      instagramId: 'DKQcYIht3oD',
+      title: 'Highlight Tigre \'25',
+      fullTitle: 'Hector Fertoli | Jugadas destacadas \'25',
+      season: 'Highlight Tigre \'25',
+      league: 'Liga Argentina',
+      thumbnail: image15,
+      cover: image15,
+      category: 'Highlights',
+    },
+    
+    {
+      id: 'v3',
+      instagramId: 'DEYUrsoy4L_',
+      title: 'Highlight Huracán \'24',
       fullTitle: 'Hector Fertoli | Asistencias y juego',
-      season: 'Highlight 2023',
-      league: 'LIGA 1 2023',
-      thumbnail: image2,
-      cover: image2,
+      season: 'Highlight Huracán \'24',
+      league: 'Liga Argentina 2024',
+      thumbnail: image21,
+      cover: image21,
       category: 'Highlights',
     },
   ],
@@ -178,16 +191,28 @@ export const playerData = {
 
 
   gallery: [
-    { id: 1, src: image1, alt: 'Hector Fertoli', caption: 'Cusco FC', category: 'Partido', aspect: 'wide' },
-    { id: 2, src: image2, alt: 'Hector Fertoli', caption: 'Cusco FC',    category: 'Festejo', aspect: 'tall' },
-    { id: 3, src: image3, alt: 'Hector Fertoli', caption: 'Cusco FC', category: 'Entrenamiento', aspect: 'square' },
-    { id: 4, src: image4, alt: 'Hector Fertoli', caption: 'Cusco FC',     category: 'Partido', aspect: 'wide' },
-    { id: 5, src: image5, alt: 'Hector Fertoli', caption: 'Cusco FC',   category: 'Equipo',  aspect: 'wide' },
-    { id: 6, src: image6, alt: 'Hector Fertoli', caption: 'Cusco FC',       category: 'Retrato', aspect: 'tall' },
-    { id: 7, src: image7, alt: 'Hector Fertoli', caption: 'Cusco FC', category: 'Partido', aspect: 'wide' },
-    { id: 8, src: image8, alt: 'Hector Fertoli', caption: 'Cusco FC',     category: 'Partido', aspect: 'wide' },
-    { id: 9, src: image9, alt: 'Hector Fertoli', caption: 'Cusco FC', category: 'Partido', aspect: 'wide' },
-    { id: 10, src: image10, alt: 'Hector Fertoli', caption: 'Cusco FC',     category: 'Partido', aspect: 'wide' },
+    { id: 1, src: image1, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 2, src: image2, alt: 'Hector Fertoli', caption: 'Universitario',    category: 'Festejo', aspect: 'tall' },
+    { id: 3, src: image3, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Entrenamiento', aspect: 'square' },
+    { id: 4, src: image4, alt: 'Hector Fertoli', caption: 'Universitario',     category: 'Partido', aspect: 'wide' },
+    { id: 5, src: image5, alt: 'Hector Fertoli', caption: 'Universitario',   category: 'Equipo',  aspect: 'wide' },
+    { id: 6, src: image6, alt: 'Hector Fertoli', caption: 'Universitario',       category: 'Retrato', aspect: 'tall' },
+    { id: 7, src: image7, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 8, src: image8, alt: 'Hector Fertoli', caption: 'Universitario',     category: 'Partido', aspect: 'wide' },
+    { id: 9, src: image9, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 10, src: image10, alt: 'Hector Fertoli', caption: 'Universitario',     category: 'Partido', aspect: 'wide' },
+    { id: 11, src: image11, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 12, src: image12, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 13, src: image13, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 14, src: image14, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 15, src: image15, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 16, src: image16, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 17, src: image17, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 18, src: image18, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 19, src: image19, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 20, src: image20, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 21, src: image21, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
+    { id: 22, src: image22, alt: 'Hector Fertoli', caption: 'Universitario', category: 'Partido', aspect: 'wide' },
 
   ],
 
@@ -196,8 +221,8 @@ export const playerData = {
       label: 'Instagram',
       icon: FaInstagram,
       iconBg: FaInstagram,
-      handle: '@hector.fertoli',
-      url: 'https://www.instagram.com/hector.fertoli/',
+      handle: '@rayofertoli',
+      url: 'https://www.instagram.com/rayofertoli/',
       hoverColor: '#E1306C',
       hoverGradient: 'insta-gradient',
     },
@@ -206,7 +231,7 @@ export const playerData = {
       image: transfermkt,
       iconBg: IoMdStats,
       handle: '/hector-fertoli',
-      url: 'https://www.transfermarkt.com.ar/hector-fertoli/profil/spieler/441344',
+      url: 'https://www.transfermarkt.com.ar/hector-fertoli/profil/spieler/424024',
       hoverColor: '#2e73f2',
     },
   ],

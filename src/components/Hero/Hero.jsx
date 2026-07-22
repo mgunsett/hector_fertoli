@@ -22,11 +22,13 @@ function PlayerPanel() {
       justifyContent={'flex-start'}
       alignItems={'flex-start'}
       gap={{ base: 0, md: 4 }}
-      fontFamily='"Dela Gothic One", sans-serif'
+      fontFamily='heading'
+      fontWeight="bold"
     >
       <Text
         className="player-number"
-        fontFamily='"Dela Gothic One", sans-serif'
+        fontFamily='heading'
+        fontWeight="bold"
         fontSize={{ base: '28vw', md: '16vw', lg: '10vw' }}
         lineHeight={0.9}
         color="brand.gray2"
@@ -34,8 +36,8 @@ function PlayerPanel() {
       >
         {playerData.number}
       </Text>
-      <Box w={{ base: '100px', md: "1px" }} h={{ base: "1px", md: "70px", lg: "100px" }} bg="brand.amber" mt={{ base: 4, md: 8 }}/>
-      <Flex id="player-info-text" direction={'column'} justifyContent={'flex-start'} gap={1} mt={{ base: 2, md: 8 }}>
+      <Box w={{ base: '100px', md: "1px" }} h={{ base: "1px", md: "70px", lg: "100px" }} bg="brand.amber" mt={{ base: 2, md: 8 }}/>
+      <Flex id="player-info-text" direction={'column'} justifyContent={'flex-start'} gap={1} mt={{ base: 4, md: 8 }}>
         <Flex gap={1} justifyContent='flex-start' alignItems={{ base: 'flex-start', md: 'center' }} direction={{ base: 'column', md: 'row' }}>
           <Text className='text-title' fontSize={{ base: '9px', md: "10px" }} color="brand.bone"
             textTransform="uppercase" letterSpacing="widest">
@@ -182,7 +184,7 @@ export default function Hero() {
           position="absolute"
           inset={0}
           zIndex={{base: 3, md: 5,  lg:9}}
-          pl={{ base: '2%', lg: '10%' }}
+          pl={{ base: '2%', lg: '12%' }}
           pt={{ base: '23%', lg: '5%' }}
           display="flex"
           justifyContent={{ base: 'flex-start', lg: 'flex-start' }}
@@ -199,7 +201,7 @@ export default function Hero() {
               src={playerData.image}
               alt={`${playerData.displayName}, ${playerData.position.toLowerCase()} profesional de ${playerData.currentClub}`}
               h={{ base: '100%', lg: '100%' }}
-              w={{ base: '58vw', lg: '30vw' }}
+              w={{ base: '68vw', lg: '30vw' }}
               objectFit="contain"
               objectPosition="bottom center"
               draggable={false}
@@ -216,17 +218,16 @@ export default function Hero() {
           pointerEvents="none"
           display="flex"
           flexDir="column"
-          alignItems='center'
+          alignItems={{ base: 'center', md: 'flex-start' }}
           justifyContent={{ base: 'flex-start', md: 'center' }}
-          pl={{ base: 0, lg: '16%' }}
-          pt={{ base: '30%', lg: '16%' }}
+          pt={{ base: '30%', lg: '19%' }}
+          ml={{ base: 0, md: '37%' }}
         >
           <Flex 
           direction="column" 
           as="h1" 
           overflow="hidden"
           >
-
               <Text
                 ref={line1Ref}
                 className="player-name"
@@ -236,13 +237,12 @@ export default function Hero() {
                 fontWeight="bold"
                 letterSpacing="2px"
                 textTransform="uppercase"
-                fontSize={{ base: '12vw', md: '16vw', lg: '6vw' }}
+                fontSize={{ base: '12vw', md: '16vw', lg: '5vw' }}
                 color="brand.amber"
                 lineHeight={0.9}
                 style={{ opacity: 0 }}
-                mt={{ base: ' 0px', md: '-20px', lg: '0px' }}
-                ml={{ base: 28, md: 2 }}
-                mb={{ base: '-45px',lg: '0px' }}
+                ml={{ base: 2, md: 0 }}
+                mb={'-5px'}
               >
                 {playerData.name}
               </Text>            
@@ -253,7 +253,7 @@ export default function Hero() {
               display="block"
               fontFamily='Nippo'
               fontWeight="bold"
-              fontSize={{ base: '11.6vw', md: '16vw', lg: '5vw' }}
+              fontSize={{ base: '22vw', md: '16vw', lg: '10vw' }}
               letterSpacing="2px"
               color="transparent"
               lineHeight={0.9}
@@ -272,7 +272,7 @@ export default function Hero() {
           className="player-info"
           position="absolute"
           bottom={{ base: 'auto', lg: '20%' }}
-          left={{ base: '60%', lg: '34%' }}
+          left={{ base: '70%', lg: '37%' }}
           top={{ base: '52%', lg: '38%' }}
           zIndex={15}
         >

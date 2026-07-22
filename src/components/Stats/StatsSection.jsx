@@ -20,7 +20,7 @@ gsap.registerPlugin(ScrollTrigger)
 //  'radar'   → radar hexagonal con perfil y temporada a los lados
 //  'dossier' → informe de scouting
 //  'anillos' → anillos de progreso circulares (nuevo)
-const STATS_DESIGN = 'dossier'
+const STATS_DESIGN = 'anillos'
 
 // Diseño de la trayectoria de clubes:
 //  'carrusel' → línea de tiempo horizontal con arrastre (original)
@@ -542,7 +542,7 @@ export default function StatsSection() {
                   textTransform="uppercase" letterSpacing="widest" >
               Temporada 2025 / 2026
             </Text>
-            <Text as="h2" fontFamily='"Dela Gothic One", sans-serif' fontWeight="bold" fontSize={{ base: '3xl', lg: '4xl' }}
+            <Text as="h2" fontFamily='heading' fontWeight="bold" fontSize={{ base: '4xl', lg: '4xl' }}
                   color="brand.amber" lineHeight={1}>
               Estadísticas
             </Text>
