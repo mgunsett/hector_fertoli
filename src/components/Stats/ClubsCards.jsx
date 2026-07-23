@@ -47,7 +47,7 @@ function ClubCard({ club, index, isActive }) {
           <Text
             fontFamily="mono"
             fontSize="10px"
-            fontWeight="600"
+            fontWeight="200"
             color={isActive ? 'brand.rec' : 'brand.boneWarm'}
             textTransform="uppercase"
             letterSpacing="0.18em"
@@ -107,7 +107,8 @@ function ClubCard({ club, index, isActive }) {
 
         <Text
           mt={4}
-          fontFamily='"Dela Gothic One", monospace'
+          fontFamily='heading'
+          fontWeight='bold'
           textTransform="uppercase"
           fontSize={{ base: 'xs', md: 'sm' }}
           color="brand.bone"
@@ -241,12 +242,12 @@ export function ClubsCards() {
       {/* Encabezado */}
       <Flex align="flex-end" justify="space-between" mb={7}>
         <Box>
-          <Text fontFamily='"mono", monospace' fontSize="10px" color="brand.bone"
+          <Text fontFamily='mono' fontSize="10px" color="brand.bone"
                 textTransform="uppercase" letterSpacing="widest">
             Trayectoria
           </Text>
-          <Text as="h2" fontFamily='"Dela Gothic One", sans-serif' fontWeight="bold"
-                fontSize={{ base: '3xl', lg: '4xl' }} color="brand.amber" lineHeight={1}>
+          <Text as="h2" fontFamily='heading' fontWeight="bold"
+                fontSize={{ base: '4xl', lg: '5xl' }} color="brand.amber" lineHeight={1}>
             Clubes
           </Text>
         </Box>

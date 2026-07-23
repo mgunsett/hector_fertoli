@@ -182,6 +182,7 @@ function GalleryCard({ photo, offset, abs, cardW, spacing, total, index, onFocus
          {/* Logo */}
         <Text
           fontFamily="heading"
+          fontWeight="bold"
           fontSize="2xl"
           letterSpacing="wider"
           cursor="pointer"
@@ -191,7 +192,7 @@ function GalleryCard({ photo, offset, abs, cardW, spacing, total, index, onFocus
           transition="color 0.2s"
         >
           {playerData.initials}
-          <Box as="span" color="brand.gray2">_</Box>
+          <Box as="span" color="brand.dorado">_</Box>
         </Text>
         </Box>
 
@@ -200,6 +201,7 @@ function GalleryCard({ photo, offset, abs, cardW, spacing, total, index, onFocus
           <Flex
             position="absolute" top={2} left={2}
             boxSize={{base: '24px',md:"34px"}}
+            fontFamily="heading" fontSize={{base: 'md',md:"xl"}} color="white"
             align="center" justify="center"
             borderRadius="full"
             bg="rgba(5,11,20,0.5)"
@@ -301,11 +303,11 @@ export default function GallerySection() {
       <Box maxW="1400px" mx="auto" px={{ base: 2, lg: 0 }} position="relative">
         <Flex align="flex-end" justify="space-between" mb={{ base: 8, md: 10 }} ref={titleRef}>
           <Box>
-            <Text fontFamily='"mono", monospace' fontSize="10px" color="brand.bone"
+            <Text fontFamily='mono' fontSize="10px" color="brand.bone"
                   textTransform="uppercase" letterSpacing="widest">
               Fotos
             </Text>
-            <Text as="h2" fontFamily='"Dela Gothic One", sans-serif' fontWeight="bold" fontSize={{ base: '3xl', lg: '4xl' }}
+            <Text as="h2" fontFamily='heading' fontWeight="bold" fontSize={{ base: '4xl', lg: '5xl' }}
                   color="brand.amber" lineHeight={1}>
               Galería
             </Text>

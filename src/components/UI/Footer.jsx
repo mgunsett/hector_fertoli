@@ -73,7 +73,7 @@ export default function Footer() {
         </Box>
 
         <Text
-          fontFamily="mono"
+          fontFamily="heading"
           fontSize="12px"
           letterSpacing="0.12em"
           textTransform="uppercase"
@@ -83,7 +83,7 @@ export default function Footer() {
           © 2026 {playerData.displayName} · Todos los derechos reservados
         </Text>
 
-        <Text fontSize="12px" color="brand.bone" letterSpacing="0.05em">
+        <Text fontFamily="heading" fontSize="12px" color="brand.bone" letterSpacing="0.05em">
             Desarrollo Web -{' '}
             <Link
             href="https://matiasgunsett.netlify.app/"

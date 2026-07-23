@@ -70,7 +70,7 @@ function SocialCard({ item }) {
         />
         )}
         <Text
-          fontFamily='"mono", monospace'
+          fontFamily='mono'
           fontSize="10px"
           letterSpacing="0.24em"
           textTransform="uppercase"
@@ -80,8 +80,12 @@ function SocialCard({ item }) {
         >
           {item.label}
         </Text>
-        <Text fontFamily='"Dela Gothic One", sans-serif' color={'brand.bone'} fontSize={{base:'xl',md:"2xl"}} _groupHover={{ color: 'brand.gray2' }}>
-
+        <Text 
+          fontFamily='heading'
+          color={'brand.bone'} 
+          fontSize={{base:'xl',md:"2xl", lg:"3xl"}}
+          _groupHover={{ color: 'brand.gray2' }}
+           >
           {item.handle}
         </Text>
       </Box>
@@ -143,7 +147,7 @@ function ContactRow({ item, gold }) {
         )}
         <Box ml={gold ? '8px' : '16px'}>
           <Text
-            fontFamily='"mono", monospace'
+            fontFamily='mono'
             fontSize="10px"
             letterSpacing="0.24em"
             textTransform="uppercase"
@@ -153,10 +157,10 @@ function ContactRow({ item, gold }) {
             {item.label}
           </Text>
           <Text 
-          fontFamily='"Dela Gothic One", sans-serif' 
-          fontSize={{ base: 'lg', md: 'xl' }}
+          fontFamily='heading'
+          fontSize={{ base: 'lg', md: 'xl', lg: '2xl' }}
           color="brand.bone" 
-          fontWeight={500} 
+          fontWeight={400} 
           _groupHover={{ color: gold ? 'brand.orangeLight' : 'brand.gray2' }}
           >
             {item.handle}
@@ -208,11 +212,11 @@ export function ContactSection() {
       <Box position="relative" zIndex={1} maxW="1400px" mx="auto">
         {/* Header */}
         <Box ref={headerRef} mb={{ base: 8, md: 10 }}>
-          <Text fontFamily='"mono", monospace' fontSize="10px" color="brand.bone" letterSpacing="0.28em"
+          <Text fontFamily='mono' fontSize="10px" color="brand.bone" letterSpacing="0.28em"
                   textTransform="uppercase" letterSpacing="widest">
             #Redes
           </Text>
-          <Text as="h2" fontFamily='"Dela Gothic One", sans-serif' fontWeight="bold" fontSize={{ base: '3xl', lg: '6xl' }}
+          <Text as="h2" fontFamily='heading' fontWeight="bold" fontSize={{ base: '4xl', lg: '5xl' }}
                   color="brand.amber" lineHeight={1}>
             Contacto
           </Text>
