@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { Box, Text, Flex, Image } from '@chakra-ui/react'
-import { FiX } from 'react-icons/fi'
+import { Box, Flex, Text, Image, Portal, useBreakpointValue } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -8,443 +7,292 @@ import { playerData } from '../../data/playerData'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// Galería "Mosaico con pestañas": grilla de 4 columnas (2 en mobile) con una
+// foto grande cada cinco, filtro por club, "Ver más" y visor a pantalla completa.
+
 const MotionBox = motion(Box)
-const MotionImage = motion(Image)
+const EASE = 'cubic-bezier(0.23,1,0.32,1)'
+const BG = '#0C0E0A'
 
-const SPRING = { type: 'spring', stiffness: 240, damping: 28, mass: 0.9 }
+const CATS = [
+  { key: 'all', label: 'Todas' },
+  { key: 'u', label: playerData.currentClub },
+  { key: 'c', label: 'Clubes anteriores' },
+]
 
-function Lightbox({ photo, onClose, onPrev, onNext }) {
-  useEffect(() => {
-    const handler = (e) => {
-      if (e.key === 'Escape')     onClose()
-      if (e.key === 'ArrowRight') onNext()
-      if (e.key === 'ArrowLeft')  onPrev()
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [onClose, onPrev, onNext])
-
-  const touchStart = useRef(0)
-
-  return (
-    <MotionBox
-      position="fixed" inset={0} zIndex={900}
-      bg="rgba(0,0,0,0.93)"
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
-      display="flex" alignItems="center" justifyContent="center"
-      onClick={onClose}
-      onTouchStart={(e) => { touchStart.current = e.touches[0].clientX }}
-      onTouchEnd={(e) => {
-        const dx = e.changedTouches[0].clientX - touchStart.current
-        if (dx > 50) onPrev()
-        if (dx < -50) onNext()
-      }}
-    >
-      <MotionImage
-        src={photo.src} alt={photo.alt}
-        maxH="78vh" maxW="90vw"
-        objectFit="contain"
-        borderRadius="12px"
-        initial={{ scale: 0.96, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.3 }}
-        onClick={(e) => e.stopPropagation()}
-        draggable={false}
-      />
-      
-      {/* Navigation wings */}
-      <Box position="absolute" left={50} top={0} bottom={0} w="15%"
-           display={{ base: 'none', lg: 'flex' }} alignItems="center" justifyContent="center"
-           onClick={(e) => { e.stopPropagation(); onPrev() }}
-           cursor="pointer" opacity={0.4} _hover={{ opacity: 1 }} transition="opacity 0.2s">
-        <Text fontFamily="heading" fontSize="3xl" color="white">‹</Text>
-      </Box>
-      <Box position="absolute" right={50} top={0} bottom={0} w="15%"
-           display={{ base: 'none', lg: 'flex' }} alignItems="center" justifyContent="center"
-           onClick={(e) => { e.stopPropagation(); onNext() }}
-           cursor="pointer" opacity={0.4} _hover={{ opacity: 1 }} transition="opacity 0.2s">
-        <Text fontFamily="heading" fontSize="3xl" color="white">›</Text>
-      </Box>
-      {/* Close */}
-      <Box
-        as="button"
-        position="absolute"
-        top={{ base: 36, md: 14 }}
-        right={{ base: 4, md: 60 }}
-        zIndex={2100}
-        aria-label="Cerrar video"
-        borderRadius="full"
-        p={1}
-        bg="brand.bgRef"
-        backdropFilter="blur(10px)"
-        color="white"
-        onClick={onClose}
-        transition="color 0.3s ease, transform 0.3s ease"
-        _hover={{ color: 'brand.gray2', transform: 'rotate(90deg)' }}
-      >
-        <Box as={FiX} fontSize="32px" />
-      </Box>
-    </MotionBox>
-  )
+// Formas [columnas, filas] que cierran la grilla sin huecos: grupos de 5
+// (una grande 2x2 + cuatro chicas) y el resto ajustado al ancho.
+function shapesFor(n, cols) {
+  const out = []
+  while (n - out.length >= 5) out.push([2, 2], [1, 1], [1, 1], [1, 1], [1, 1])
+  const rest = {
+    4: { 1: [[4, 1]], 2: [[2, 1], [2, 1]], 3: [[2, 1], [1, 1], [1, 1]], 4: [[1, 1], [1, 1], [1, 1], [1, 1]] },
+    2: { 1: [[2, 1]], 2: [[1, 1], [1, 1]], 3: [[2, 1], [1, 1], [1, 1]], 4: [[1, 1], [1, 1], [1, 1], [1, 1]] },
+  }[cols][n - out.length]
+  return rest ? out.concat(rest) : out
 }
 
-function GalleryCard({ photo, offset, abs, cardW, spacing, total, index, onFocus, onZoom }) {
-  const isCenter = offset === 0
-  const dir = offset === 0 ? 0 : offset > 0 ? 1 : -1
+function Lightbox({ list, index, onClose, onMove }) {
+  const closeRef = useRef(null)
+  const touchX = useRef(0)
+  const photo = list[index]
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowRight') onMove(1)
+      if (e.key === 'ArrowLeft') onMove(-1)
+    }
+    window.addEventListener('keydown', onKey)
+    window.__lenis?.stop()
+    closeRef.current?.focus()
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      window.__lenis?.start()
+    }
+  }, [onClose, onMove])
+
+  const btn = {
+    as: 'button',
+    position: 'absolute',
+    boxSize: '46px',
+    borderRadius: 'full',
+    border: '1.5px solid',
+    borderColor: 'brand.amber',
+    color: 'brand.amber',
+    bg: 'rgba(12,14,10,0.6)',
+    fontSize: '18px',
+    display: 'grid',
+    placeItems: 'center',
+    zIndex: 2,
+  }
 
   return (
     <MotionBox
-      position="absolute"
-      top="50%"
-      left={{ base: '48%', md: '50%' }}
-      h={{ base: '78%', md: '86%' }}
-      style={{ width: cardW, transformStyle: 'preserve-3d' }}
-      initial={false}
-      animate={{
-        x: `calc(-50% + ${offset * spacing}px)`,
-        y: '-50%',
-        rotateY: -dir * 32,
-        scale: 1 - abs * 0.13,
-        z: -abs * 160,
-        opacity: abs > 2 ? 0 : 1,
+      position="fixed"
+      inset={0}
+      zIndex={2000}
+      bg="rgba(12,14,10,0.95)"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Foto ampliada"
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      px={{ base: 3, md: '70px' }}
+      py={{ base: '70px', md: '60px' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+      onTouchStart={(e) => { touchX.current = e.touches[0].clientX }}
+      onTouchEnd={(e) => {
+        const dx = e.changedTouches[0].clientX - touchX.current
+        if (Math.abs(dx) > 50) onMove(dx > 0 ? -1 : 1)
       }}
-      transition={SPRING}
-      zIndex={20 - abs * 4}
-      cursor={isCenter ? 'zoom-in' : 'pointer'}
-      onClick={() => (isCenter ? onZoom() : onFocus())}
-      pointerEvents={abs > 2 ? 'none' : 'auto'}
     >
-      <Box
-        position="relative"
-        w={{ base: '200px', md: '100%' }} 
-        h="100%"
-        overflow="hidden"
-        borderRadius={{ base: '18px', md: '10px' }}
-        border="1px solid"
-        borderColor={isCenter ? 'brand.amber' : 'brand.amber2'}
-        boxShadow={isCenter
-          ? ' -1px 12px 19px 0px rgba(0,0,0,0.75)'
-          : '0 24px 60px rgba(0,0,0,0.45)'}
-        transition="border-color 0.4s"
-      >
-        <Image
-          src={photo.src} alt={photo.alt}
-          w="100%" h="100%"
-          objectFit="cover"
-          objectPosition="center"
-          draggable={false}
-          loading="lazy"
-        />
-
-        {/* Velo oscuro en tarjetas laterales */}
-        <Box
-          position="absolute" inset={0}
-          bg="rgba(5,11,20,0.55)"
-          opacity={isCenter ? 0 : 1}
-          transition="opacity 0.45s ease"
-          pointerEvents="none"
-        />
-
-        {/* Degradado inferior */}
-        <Box
-          position="absolute" inset={0}
-          background="linear-gradient(to top, rgba(3,6,10,0.92) 0%, transparent 42%, rgba(3,6,10,0.2) 100%)"
-          pointerEvents="none"
-        />
-
-        {/* Badge índice */}
-        <Flex
-          position="absolute" top={4} right={4}
-          align="center"
-          px={2.5} py={1}
-          borderRadius="full"
-          bg="rgba(5,11,20,0.55)"
-          backdropFilter="blur(6px)"
-          border="1px solid"
-          borderColor="whiteAlpha.200"
-          opacity={isCenter ? 1 : 0}
-          transition="opacity 0.4s ease"
-        >
-          <Text fontFamily="mono" fontSize="10px" color="white" letterSpacing="0.15em">
-            {String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
-          </Text>
-        </Flex>
-
-        {/* Info de la foto central */}
-        <Box
-          position="absolute" bottom={0} left={0} right={0}
-          p={{ base: 4, md: 6 }}
-          opacity={isCenter ? 1 : 0}
-          transform={isCenter ? 'translateY(0)' : 'translateY(12px)'}
-          transition="opacity 0.45s ease 0.05s, transform 0.45s ease 0.05s"
-        >
-         {/* Logo */}
-        <Text
-          fontFamily="heading"
-          fontWeight="bold"
-          fontSize="2xl"
-          letterSpacing="wider"
-          cursor="pointer"
-          onClick={(e) => handleLink(e, '#hero')}
-          color="brand.amber"
-          _hover={{ color: 'brand.amber' }}
-          transition="color 0.2s"
-        >
-          {playerData.initials}
-          <Box as="span" color="brand.dorado">_</Box>
-        </Text>
-        </Box>
-
-        {/* Lupa al hover en la central */}
-        {isCenter && (
-          <Flex
-            position="absolute" top={2} left={2}
-            boxSize={{base: '24px',md:"34px"}}
-            fontFamily="heading" fontSize={{base: 'md',md:"xl"}} color="white"
-            align="center" justify="center"
-            borderRadius="full"
-            bg="rgba(5,11,20,0.5)"
-            backdropFilter="blur(6px)"
-            border="1px solid"
-            borderColor="whiteAlpha.200"
-            opacity={0}
-            transition="opacity 0.3s ease"
-            sx={{ '[role=group]:hover &': { opacity: 1 } }}
-          >
-            <Text fontFamily="heading" fontSize="xs" color="white" lineHeight={1}>⤢</Text>
-          </Flex>
-        )}
-      </Box>
+      <Image
+        key={photo.id}
+        src={photo.src}
+        alt={photo.alt}
+        maxW="100%"
+        maxH="100%"
+        objectFit="contain"
+        draggable={false}
+        sx={{ animation: `lbIn .5s ${EASE} both`, '@keyframes lbIn': { from: { opacity: 0, transform: 'scale(.97)' } } }}
+      />
+      <Box {...btn} ref={closeRef} top={4} right={4} aria-label="Cerrar" onClick={onClose}>✕</Box>
+      <Box {...btn} left={{ base: 'calc(50% - 56px)', md: '14px' }} top={{ base: 'auto', md: '50%' }} bottom={{ base: 3, md: 'auto' }} aria-label="Foto anterior" onClick={() => onMove(-1)}>←</Box>
+      <Box {...btn} right={{ base: 'calc(50% - 56px)', md: '14px' }} top={{ base: 'auto', md: '50%' }} bottom={{ base: 3, md: 'auto' }} aria-label="Foto siguiente" onClick={() => onMove(1)}>→</Box>
+      <Text position="absolute" top={7} left={0} right={0} textAlign="center" fontSize="13px" fontWeight="bold" letterSpacing="0.16em" color="#d6dccd" sx={{ fontVariantNumeric: 'tabular-nums' }}>
+        {index + 1} / {list.length}
+      </Text>
     </MotionBox>
   )
 }
 
 export default function GallerySection() {
-  const [current,   setCurrent]   = useState(0)
-  const [lightbox,  setLightbox]  = useState(null)
-  const [stageW,    setStageW]    = useState(0)
   const sectionRef = useRef(null)
-  const titleRef   = useRef(null)
-  const stageRef   = useRef(null)
-  const total      = playerData.gallery.length
+  const [cat, setCat] = useState('all')
+  const [open, setOpen] = useState(false)
+  const [lightbox, setLightbox] = useState(null)
+  const cols = useBreakpointValue({ base: 2, md: 4 }, { ssr: false }) || 4
 
-  // Medir el ancho del escenario para calcular tamaños en px
-  useEffect(() => {
-    const el = stageRef.current
-    if (!el) return
-    const ro = new ResizeObserver(([entry]) => setStageW(entry.contentRect.width))
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [])
+  const list = playerData.gallery.filter((g) => cat === 'all' || g.cat === cat)
+  const first = cols === 4 ? 10 : 5
+  const shown = open ? list : list.slice(0, first)
+  const shapes = shapesFor(shown.length, cols)
+
+  const move = useCallback((d) => setLightbox((i) => (i + d + list.length) % list.length), [list.length])
+  const close = useCallback(() => setLightbox(null), [])
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(titleRef.current,
-        { y: 36, opacity: 0 },
+    const mm = gsap.matchMedia()
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      gsap.fromTo(
+        gsap.utils.toArray('[data-reveal]', sectionRef.current),
+        { y: 30, opacity: 0 },
         {
-          y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
-          scrollTrigger: { trigger: titleRef.current, start: 'top 85%', once: true },
+          y: 0, opacity: 1, duration: 0.9, ease: 'expo.out', stagger: 0.08,
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 75%', once: true },
         }
       )
-    }, sectionRef)
-    return () => ctx.revert()
+    })
+    return () => mm.revert()
   }, [])
 
-  const prev = useCallback(() => setCurrent((c) => (c - 1 + total) % total), [total])
-  const next = useCallback(() => setCurrent((c) => (c + 1) % total), [total])
+  // Al abrir "Ver más" cambia el alto de la página: recalcular los triggers
+  useEffect(() => { ScrollTrigger.refresh() }, [open, cat])
 
-  useEffect(() => {
-    const handler = (e) => {
-      if (lightbox !== null) return
-      if (e.key === 'ArrowRight') next()
-      if (e.key === 'ArrowLeft')  prev()
-    }
-    window.addEventListener('keydown', handler)
-    return () => window.removeEventListener('keydown', handler)
-  }, [lightbox, next, prev])
-
-  // offset circular para loop infinito
-  const circularOffset = (i) => {
-    let o = i - current
-    if (o > total / 2)  o -= total
-    if (o < -total / 2) o += total
-    return o
-  }
-
-  const cardW   = Math.max(180, Math.min(stageW * 0.4, 440))
-  const spacing = cardW * 0.62
-
-  const onDragEnd = (_e, info) => {
-    const threshold = 70
-    if (info.offset.x < -threshold || info.velocity.x < -350) next()
-    else if (info.offset.x > threshold || info.velocity.x > 350) prev()
-  }
+  const pick = (key) => { setCat(key); setOpen(false) }
 
   return (
     <Box
       as="section"
       id="galeria"
       ref={sectionRef}
-      bg="brand.dark"
-      minH="100vh"
-      py={{ base: 16, lg: 20 }}
-      overflow="hidden"
       position="relative"
+      bg="brand.dark"
+      px={{ base: 4, md: 12, lg: 20 }}
+      py={{ base: 16, md: 28 }}
     >
-      {/* glow ambiental */}
-      <Box
-        position="absolute" top={{base:'16%',md:"10%"}} left="50%" transform="translateX(-50%)"
-        w="70vw" h="40vw" maxW="900px"
-        background="radial-gradient(ellipse, #bda78e1a 0%, transparent 70%)"
-        pointerEvents="none"
-      />
-
-      <Box maxW="1400px" mx="auto" px={{ base: 2, lg: 0 }} position="relative">
-        <Flex align="flex-end" justify="space-between" mb={{ base: 8, md: 10 }} ref={titleRef}>
+      <Box maxW="1400px" mx="auto">
+        <Flex data-reveal justify="space-between" align={{ base: 'flex-start', md: 'flex-end' }} direction={{ base: 'column', md: 'row' }} gap={5} mb={{ base: 7, md: 9 }}>
           <Box>
-            <Text fontFamily='mono' fontSize="10px" color="brand.bone"
-                  textTransform="uppercase" letterSpacing="widest">
+            <Text fontFamily="mono" fontSize="10px" color="brand.bone" textTransform="uppercase" letterSpacing="widest">
               Fotos
             </Text>
-            <Text as="h2" fontFamily='heading' fontWeight="bold" fontSize={{ base: '4xl', lg: '5xl' }}
-                  color="brand.amber" lineHeight={1}>
+            <Text as="h2" fontFamily="heading" fontWeight="bold" fontSize={{ base: '4xl', lg: '5xl' }} color="brand.amber" lineHeight={1}>
               Galería
             </Text>
           </Box>
-          <Text fontFamily="mono" fontSize="sm" color="brand.gray" letterSpacing="wider">
-            {String(current + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
-          </Text>
-        </Flex>
-      </Box>
 
-      {/* Escenario 3D */}
-      <Box
-        ref={stageRef}
-        position="relative"
-        h={{ base: '420px', md: '500px', lg: '560px' }}
-        sx={{ perspective: '1800px' }}
-        overflow="hidden"
-      >
-        {/* Sombra de piso bajo la central */}
-        <Box
-          position="absolute" bottom="8%" left="50%" transform="translateX(-50%)"
-          w={`${cardW * 0.9}px`} h="40px"
-          background="radial-gradient(ellipse, rgba(0,0,0,0.55) 0%, transparent 70%)"
-          filter="blur(10px)"
-          pointerEvents="none"
-          zIndex={0}
-        />
-
-        {/* Capa de arrastre */}
-        <MotionBox
-          position="absolute" inset={0}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.12}
-          onDragEnd={onDragEnd}
-          style={{ transformStyle: 'preserve-3d' }}
-          role="group"
-        >
-          {playerData.gallery.map((photo, i) => {
-            const offset = circularOffset(i)
-            const abs = Math.abs(offset)
-            if (abs > 2) return null
-            return (
-              <GalleryCard
-                key={photo.id}
-                photo={photo}
-                offset={offset}
-                abs={abs}
-                cardW={cardW}
-                spacing={spacing}
-                total={total}
-                index={i}
-                onFocus={() => setCurrent(i)}
-                onZoom={() => setLightbox(i)}
-              />
-            )
-          })}
-        </MotionBox>
-
-        {/* Fades laterales */}
-        <Box position="absolute" left={0} top={0} bottom={0} w={{ base: '8%', lg: '14%' }}
-             bgGradient="linear(to-r, brand.dark, transparent)" zIndex={30} pointerEvents="none" />
-        <Box position="absolute" right={0} top={0} bottom={0} w={{ base: '8%', lg: '14%' }}
-             bgGradient="linear(to-l, brand.dark, transparent)" zIndex={30} pointerEvents="none" />
-      </Box>
-
-      {/* Controles */}
-      <Box maxW="1400px" mx="auto" px={{ base: 5, lg: 10 }} mt={{ base: 6, md: 10 }}>
-        <Flex align="center" justify="center" gap={{ base: 4, md: 6 }}>
-          {/* Flecha izq */}
-          <Box
-            as="button" onClick={prev} aria-label="Anterior"
-            boxSize="44px" flexShrink={0}
-            display="flex" alignItems="center" justifyContent="center"
-            border="1px solid" borderColor="brand.amber" borderRadius="full"
-            color="brand.bone" transition="all 0.25s" 
-            _hover={{ bg: '#bda78e1a', color: 'brand.gray2' }}
-            _active={{ transform: 'scale(0.92)' }}
-          >
-            <Text fontFamily="heading" fontSize="4xl" lineHeight={1} pt="2px">‹</Text>
-          </Box>
-
-          {/* Tira de miniaturas */}
-          <Flex gap={2} align="center" overflowX="auto" py={1}
-                sx={{ '&::-webkit-scrollbar': { display: 'none' } }}>
-            {playerData.gallery.map((photo, i) => {
-              const active = i === current
+          <Flex role="tablist" aria-label="Filtrar fotos" gap="6px" flexWrap="wrap">
+            {CATS.map((c) => {
+              const n = playerData.gallery.filter((g) => c.key === 'all' || g.cat === c.key).length
+              const on = cat === c.key
               return (
                 <Box
-                  key={photo.id}
+                  key={c.key}
                   as="button"
-                  onClick={() => setCurrent(i)}
-                  flexShrink={0}
-                  w={active ? { base: '54px', md: '70px' } : { base: '40px', md: '48px' }}
-                  h={{ base: '40px', md: '48px' }}
-                  borderRadius="md"
-                  overflow="hidden"
-                  position="relative"
+                  role="tab"
+                  aria-selected={on}
+                  onClick={() => pick(c.key)}
+                  fontSize="11px"
+                  fontWeight="bold"
+                  letterSpacing="0.16em"
+                  textTransform="uppercase"
+                  px={4}
+                  py="11px"
+                  borderRadius="full"
                   border="1px solid"
-                  borderColor={active ? 'brand.brown' : 'whiteAlpha.200'}
-                  boxShadow={active ? '0 0 0 2px rgba(30,95,168,0.4)' : 'none'}
-                  opacity={active ? 1 : 0.5}
-                  transition="all 0.3s ease"
-                  _hover={{ opacity: 1 }}
+                  borderColor={on ? 'brand.amber' : 'brand.amberLight'}
+                  bg={on ? 'brand.amber' : 'transparent'}
+                  color={on ? BG : 'brand.gray'}
+                  transition={`background .25s ${EASE}, color .25s ${EASE}`}
+                  _focusVisible={{ outline: '2px solid', outlineColor: 'brand.dorado', outlineOffset: '2px' }}
                 >
-                  <Image src={photo.src} alt={photo.alt}
-                         w="100%" h="100%" objectFit="cover" draggable={false} />
+                  {c.label}
+                  <Box as="span" opacity={0.6} ml="6px">{n}</Box>
                 </Box>
               )
             })}
           </Flex>
+        </Flex>
 
-          {/* Flecha der */}
-          <Box
-            as="button" onClick={next} aria-label="Siguiente"
-            boxSize="44px" flexShrink={0}
-            display="flex" alignItems="center" justifyContent="center"
-            border="1px solid" borderColor="brand.amber" borderRadius="full"
-            color="brand.bone" transition="all 0.25s"
-            _hover={{ bg: '#bda78e1a', color: 'brand.gray2' }}
-            _active={{ transform: 'scale(0.92)' }}
-          >
-            <Text fontFamily="heading" fontSize="4xl" lineHeight={1} pt="2px">›</Text>
-          </Box>
+        <Box
+          data-reveal
+          display="grid"
+          gridTemplateColumns={`repeat(${cols}, 1fr)`}
+          gridAutoRows={{ base: '42vw', md: 'clamp(150px, 15vw, 230px)' }}
+          gridAutoFlow="dense"
+          gap={{ base: '6px', md: 2 }}
+        >
+          {shown.map((g, i) => {
+            const [w, h] = shapes[i]
+            // En escritorio, la foto grande alterna de lado en cada grupo
+            const flip = cols === 4 && Math.floor(i / 5) % 2 === 1 && i % 5 === 0
+            return (
+              <Box
+                key={`${cat}-${g.id}`}
+                as="button"
+                aria-label={`Ampliar foto: ${g.alt}`}
+                onClick={() => setLightbox(i)}
+                position="relative"
+                overflow="hidden"
+                bg="black"
+                cursor="zoom-in"
+                gridColumn={`span ${w}`}
+                gridRow={`span ${h}`}
+                gridColumnEnd={flip ? -1 : undefined}
+                _focusVisible={{ outline: '2px solid', outlineColor: 'brand.dorado', outlineOffset: '2px' }}
+                sx={{
+                  animation: `tileIn .7s ${EASE} both`,
+                  animationDelay: `${(i % 10) * 0.04}s`,
+                  '@keyframes tileIn': { from: { opacity: 0, transform: 'translateY(24px)' } },
+                  '@media (prefers-reduced-motion: reduce)': { animation: 'none' },
+                  '&::after': {
+                    content: '""', position: 'absolute', inset: 0,
+                    boxShadow: 'inset 0 0 0 0 #B4F32A', transition: `box-shadow .3s ${EASE}`,
+                  },
+                  '@media (hover: hover) and (pointer: fine)': {
+                    '&:hover img': { transform: 'scale(1.05)' },
+                    '&:hover::after': { boxShadow: 'inset 0 0 0 3px #B4F32A' },
+                  },
+                }}
+              >
+                <Image
+                  src={g.src}
+                  alt=""
+                  loading="lazy"
+                  w="100%"
+                  h="100%"
+                  objectFit="cover"
+                  objectPosition="50% 25%"
+                  transition={`transform .7s ${EASE}`}
+                  draggable={false}
+                />
+              </Box>
+            )
+          })}
+        </Box>
+
+        <Flex justify="space-between" align="center" mt={{ base: 5, md: 6 }} gap={4}>
+          <Text fontSize="12px" color="brand.gray" letterSpacing="0.12em">
+            {shown.length} de {list.length} fotos
+          </Text>
+          {list.length > first && (
+            <Box
+              as="button"
+              aria-expanded={open}
+              onClick={() => setOpen((o) => !o)}
+              fontSize="12px"
+              fontWeight="bold"
+              letterSpacing="0.18em"
+              textTransform="uppercase"
+              px="22px"
+              py="14px"
+              borderRadius="full"
+              border="1.5px solid"
+              borderColor="brand.amber"
+              color="brand.amber"
+              transition={`background .25s ${EASE}, color .25s ${EASE}`}
+              sx={{ '@media (hover: hover) and (pointer: fine)': { '&:hover': { bg: 'brand.amber', color: BG } } }}
+              _focusVisible={{ outline: '2px solid', outlineColor: 'brand.dorado', outlineOffset: '2px' }}
+            >
+              {open ? 'Ver menos' : 'Ver más fotos'}
+            </Box>
+          )}
         </Flex>
       </Box>
 
-      <AnimatePresence>
-        {lightbox !== null && (
-          <Lightbox
-            photo={playerData.gallery[lightbox]}
-            onClose={() => setLightbox(null)}
-            onPrev={() => setLightbox((l) => (l - 1 + total) % total)}
-            onNext={() => setLightbox((l) => (l + 1) % total)}
-          />
-        )}
-      </AnimatePresence>
+      {/* En un portal: la sección vive dentro de un contexto con z-index propio */}
+      <Portal>
+        <AnimatePresence>
+          {lightbox !== null && <Lightbox list={list} index={lightbox} onClose={close} onMove={move} />}
+        </AnimatePresence>
+      </Portal>
     </Box>
   )
 }

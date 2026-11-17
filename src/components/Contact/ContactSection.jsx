@@ -1,295 +1,135 @@
-import { useRef } from 'react'
-import { Box, Flex, Text, SimpleGrid, Grid, Image } from '@chakra-ui/react'
+import { useRef, useEffect } from 'react'
+import { Box, Flex, Grid, Text, Image } from '@chakra-ui/react'
+import { FaInstagram } from 'react-icons/fa'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { playerData } from '../../data/playerData'
-import { useScrubReveal } from '../../hooks/useScrubReveal'
 
-function SocialCard({ item }) {
-  const Icon = item.iconBg
-  const gradientFill = item.hoverGradient
-    ? { '[role=group]:hover & path': { fill: `url(#${item.hoverGradient})` } }
-    : undefined
-  return (
-    <Box
-      as="a"
-      href={item.url}
-      target={item.url?.startsWith('http') ? '_blank' : undefined}
-      rel="noopener noreferrer"
-      position="relative"
-      overflow="hidden"
-      bg="brand.dark"
-      border="1px solid"
-      borderColor="brand.amber"
-      borderRadius={'10px'}
-      p={{ base: 6, md: 8 }}
-      transition="all 0.3s ease"
-      role="group"
-      _hover={{
-        transform: 'translateY(-3px)',
-          borderColor: 'brand.amber',
-          bg: 'brand.bgRef',
-      }}
-    >
-      {/* watermark gigante */}
-      <Box
-        position="absolute"
-        right="-10px"
-        bottom="-40px"
-        opacity={0.2}
-        transition="all 0.4s ease"
-        _groupHover={{ opacity: 0.18, color: (item.hoverColor) }}
-        color="white"
-        pointerEvents="none"
-        sx={gradientFill}
-      >
-        <Box as={Icon} fontSize="180px" />
-      </Box>
-      <Box position="relative">
-        {item.icon && (
-        <Box
-          as={Icon}
-          fontSize="28px"
-          mb={6}
-          color="whiteAlpha.700"
-          transition="color 0.3s ease"
-          _groupHover={{ color: item.hoverColor }}
-          sx={gradientFill}
-        />
-        )}
-        {item.image && (
-          <Image
-          src={item.image}
-          alt={`Logo de ${item.label}`}
-          w={'30px'}
-          h={'30px'}
-          mb={6}
-          loading="lazy"
-          filter={{ base: 'brightness(0.7)', md: 'brightness(0.3)' }}
-          color="whiteAlpha.700"
-          transition="all 0.3s ease"
-          _groupHover={{ color: item.hoverColor, filter:"brightness(0.9)"}}
-        />
-        )}
-        <Text
-          fontFamily='mono'
-          fontSize="10px"
-          letterSpacing="0.24em"
-          textTransform="uppercase"
-          color="brand.gray"
-          mb={1}
-          _groupHover={{ color: 'brand.bone' }}
-        >
-          {item.label}
-        </Text>
-        <Text 
-          fontFamily='heading'
-          color={'brand.bone'} 
-          fontSize={{base:'xl',md:"2xl", lg:"3xl"}}
-          _groupHover={{ color: 'brand.gray2' }}
-           >
-          {item.handle}
-        </Text>
-      </Box>
-    </Box>
-  )
+gsap.registerPlugin(ScrollTrigger)
+
+// Contacto "Tarjetas grandes": 2x2, toda la tarjeta es el link. Arriba las
+// redes (Instagram y Transfermarkt), abajo el representante (en lima) y marketing.
+// De fondo, el logo de cada una en gris y tenue.
+
+const EASE = 'cubic-bezier(0.23,1,0.32,1)'
+const BG = '#0C0E0A'
+
+function buildCards() {
+  const [ig, tm] = playerData.socialMedia
+  const [rep, mkt] = playerData.contact
+  return [
+    ig && { role: 'Directo con Héctor', name: ig.label, sub: ig.handle, url: ig.url, icon: FaInstagram },
+    tm && { role: 'Ficha profesional', name: 'Transfermarkt', sub: 'Trayectoria y valor de mercado', url: tm.url, img: tm.image },
+    rep && { role: rep.title, name: rep.label, sub: `${rep.handle} · Clubes y transferencias`, url: rep.url, img: rep.image, highlight: true },
+    mkt && { role: mkt.title, name: mkt.label, sub: `${mkt.handle} · Marcas y acciones comerciales`, url: mkt.url, img: mkt.image },
+  ].filter(Boolean)
 }
 
-function ContactRow({ item, gold }) {
-  const Icon = item.icon
+function Logo({ card, size }) {
+  if (card.icon) return <Box as={card.icon} fontSize={size} />
+  return <Image src={card.img} alt="" w="100%" h="100%" objectFit="contain" />
+}
+
+function ContactCard({ card }) {
+  const hl = card.highlight
   return (
     <Box
       as="a"
-      href={item.url}
-      target={item.url?.startsWith('http') ? '_blank' : undefined}
+      href={card.url}
+      target="_blank"
       rel="noopener noreferrer"
-      display="block"
-      bg="rgba(255,255,255,0.02)"
-      border="1px solid"
-      borderColor={gold ? 'brand.orangeLight' : 'brand.amber'}
-      borderRadius='10px'
-      borderLeftColor= {gold ? 'brand.orangeLight' : 'brand.amber'}
-      borderLeftWidth= '4px'
-      borderLeftStyle= 'solid'
-      p={{ base: 5, md: 8 }}
-      transition="all 0.3s ease"
-      role="group"
-      _hover={{
-        transform: 'translateY(-3px)',
-        borderColor: gold ? 'brand.orangeLight' : 'brand.amber',
-        bg: gold ? 'rgba(163,107,44,0.04)' : 'brand.bgRef',
+      data-reveal
+      position="relative"
+      overflow="hidden"
+      display="flex"
+      flexDirection="column"
+      justifyContent="space-between"
+      minH={{ base: '200px', md: '260px' }}
+      p={{ base: '22px', md: '30px' }}
+      bg={hl ? 'brand.amber' : '#141810'}
+      color={hl ? BG : 'white'}
+      transition={`background .35s ${EASE}`}
+      _focusVisible={{ outline: '2px solid', outlineColor: 'brand.dorado', outlineOffset: '2px' }}
+      sx={{
+        '@media (hover: hover) and (pointer: fine)': {
+          ...(hl ? {} : { '&:hover': { bg: '#1f2617' } }),
+          '&:hover .c-arrow': { transform: 'rotate(45deg)' },
+        },
       }}
     >
-      <Flex align="center" gap={4}>
-        {item.icon && (
-          <Box
-            ml={3}
-            as={Icon}
-            fontSize="40px"
-            color='whiteAlpha.400'
-            opacity={0.4}
-            transition='all 0.8 ease'
-            _groupHover={{ opacity: 1, color: 'brand.brown' }}
-          />
-        )}
-        {item.image && (
-          <Box boxSize="60px" overflow="hidden" transition="all 0.5s ease" >
-            <Image
-            src={item.image}
-            alt={`Logo de ${item.label}`}
-            w="100%"
-            loading="lazy"
-            filter={{ base: 'brightness(0.7)', md: 'brightness(0.3)' }}
-            transition="all 0.3s ease"
-            _groupHover={{ 
-              filter: 'brightness(0.98)',
-             }}
-             />
-          </Box>
-        )}
-        <Box ml={gold ? '8px' : '16px'}>
-          <Text
-            fontFamily='mono'
-            fontSize="10px"
-            letterSpacing="0.24em"
-            textTransform="uppercase"
-            color="brand.gray"
-            _groupHover={{ color: 'brand.bone' }}
-          >
-            {item.label}
-          </Text>
-          <Text 
-          fontFamily='heading'
-          fontSize={{ base: 'lg', md: 'xl', lg: '2xl' }}
-          color="brand.bone" 
-          fontWeight={400} 
-          _groupHover={{ color: gold ? 'brand.orangeLight' : 'brand.gray2' }}
-          >
-            {item.handle}
-          </Text>
+      {/* Logo de fondo, sin color */}
+      <Box
+        aria-hidden="true"
+        position="absolute"
+        right={{ base: '-24px', md: '-24px' }}
+        bottom={{ base: '-28px', md: '-34px' }}
+        boxSize={{ base: '140px', md: '190px' }}
+        display="grid"
+        placeItems="center"
+        pointerEvents="none"
+        opacity={hl ? 0.22 : 0.08}
+        color={hl ? BG : 'white'}
+        sx={{ img: { filter: hl ? 'grayscale(1) brightness(.4)' : 'grayscale(1) brightness(1.6)', mixBlendMode: hl ? 'multiply' : 'normal' } }}
+      >
+        <Logo card={card} size={{ base: '140px', md: '190px' }} />
+      </Box>
+
+      <Flex justify="space-between" align="flex-start" position="relative">
+        <Box boxSize="64px" borderRadius="full" bg={BG} display="grid" placeItems="center" color="brand.amber" p={card.icon ? 0 : '7px'} overflow="hidden">
+          <Logo card={card} size="28px" />
+        </Box>
+        <Box className="c-arrow" aria-hidden="true" boxSize="48px" borderRadius="full" border="1.5px solid currentColor" display="grid" placeItems="center" fontSize="18px" transition={`transform .35s ${EASE}`}>
+          ↗
         </Box>
       </Flex>
+
+      <Box position="relative" mt={6}>
+        <Text fontSize="11px" fontWeight="bold" letterSpacing="0.22em" textTransform="uppercase" color={hl ? BG : 'brand.dorado'} opacity={hl ? 0.7 : 1}>
+          {card.role}
+        </Text>
+        <Text as="h3" mt={2} fontFamily="heading" fontWeight="bold" fontSize={{ base: '26px', md: 'clamp(26px, 2.6vw, 40px)' }} lineHeight={1} textTransform="uppercase">
+          {card.name}
+        </Text>
+        <Text mt={2} fontSize="14px" opacity={0.75}>{card.sub}</Text>
+      </Box>
     </Box>
   )
 }
 
 export function ContactSection() {
-  const professional = playerData.contact.filter(
-    (c) => c.title === 'Representante Deportivo'
-  )
-  const representative = playerData.contact.filter(
-    (c) => c.title === 'Contacto Marketing'
-  )
-
   const sectionRef = useRef(null)
-  const headerRef  = useRef(null)
-  const socialRef  = useRef(null)
-  const proRef     = useRef(null)
-  const repRef     = useRef(null)
+  const cards = buildCards()
 
-  useScrubReveal(sectionRef, {
-    elements: [
-      { ref: headerRef, fromVars: { y: 50, opacity: 0 }, vars: { y: 0, opacity: 1 } },
-      { ref: socialRef, fromVars: { y: 40, opacity: 0 }, vars: { y: 0, opacity: 1 } },
-      { ref: proRef,    fromVars: { y: 40, opacity: 0 }, vars: { y: 0, opacity: 1 } },
-      { ref: repRef,    fromVars: { y: 40, opacity: 0 }, vars: { y: 0, opacity: 1 } },
-    ],
-    start: 'top 80%',
-    end:   'top 35%',
-  })
+  useEffect(() => {
+    const mm = gsap.matchMedia()
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      gsap.fromTo(
+        gsap.utils.toArray('[data-reveal]', sectionRef.current),
+        { y: 30, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.9, ease: 'expo.out', stagger: 0.07,
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 75%', once: true },
+        }
+      )
+    })
+    return () => mm.revert()
+  }, [])
 
   return (
-    <Box
-      as="section"
-      id="contact"
-      ref={sectionRef}
-      position="relative"
-      bg="brand.dark"
-      px={{ base: 2, md: 12, lg: 20 }}
-      py={{ base: 16, md: 28 }}
-      overflow="hidden"
-    >
-      <Box className="deco-grid" />
-
-      <Box position="relative" zIndex={1} maxW="1400px" mx="auto">
-        {/* Header */}
-        <Box ref={headerRef} mb={{ base: 8, md: 10 }}>
-          <Text fontFamily='mono' fontSize="10px" color="brand.bone" letterSpacing="0.28em"
-                  textTransform="uppercase" letterSpacing="widest">
-            #Redes
+    <Box as="section" id="contact" ref={sectionRef} position="relative" bg="brand.dark" px={{ base: 4, md: 12, lg: 20 }} py={{ base: 16, md: 28 }}>
+      <Box maxW="1400px" mx="auto">
+        <Box data-reveal mb={{ base: 7, md: 10 }}>
+          <Text fontFamily="mono" fontSize="10px" color="brand.bone" textTransform="uppercase" letterSpacing="widest">
+            Hablemos
           </Text>
-          <Text as="h2" fontFamily='heading' fontWeight="bold" fontSize={{ base: '4xl', lg: '5xl' }}
-                  color="brand.amber" lineHeight={1}>
+          <Text as="h2" fontFamily="heading" fontWeight="bold" fontSize={{ base: '4xl', lg: '5xl' }} color="brand.amber" lineHeight={1}>
             Contacto
           </Text>
         </Box>
 
-        {/* Social media */}
-        <Box ref={socialRef} mb={4}>
-          <Text
-            fontFamily="mono"
-            fontSize="11px"
-            letterSpacing="0.28em"
-            textTransform="uppercase"
-            color="brand.amber"
-            mb={5}
-          >
-            Redes sociales
-          </Text>
-          {/* Definición del degradado oficial de Instagram (referenciado por fill: url(#insta-gradient)) */}
-          <Box as="svg" w={0} h={0} position="absolute" aria-hidden>
-            <defs>
-              <linearGradient id="insta-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-                <stop offset="0%"   stopColor="#f09433" />
-                <stop offset="25%"  stopColor="#e6683c" />
-                <stop offset="50%"  stopColor="#dc2743" />
-                <stop offset="75%"  stopColor="#cc2366" />
-                <stop offset="100%" stopColor="#bc1888" />
-              </linearGradient>
-            </defs>
-          </Box>
-          <SimpleGrid columns={{ base: 1, sm: 2, lg: 2 }} spacing={4}>
-            {playerData.socialMedia.map((s, i) => (
-              <SocialCard key={i} item={s} />
-            ))}
-          </SimpleGrid>
-        </Box>
-
-        {/* Contacto profesional */}
-        <Box ref={proRef} mb={4}>
-          <Text
-            fontFamily="mono"
-                fontSize="11px"
-                letterSpacing="0.28em"
-                textTransform="uppercase"
-                color="brand.amber"
-                mb={5}
-          >
-            Representante Deportivo
-          </Text>
-          <Grid templateColumns={{ base: '1fr', md: '1fr' }} gap={4}>
-            {professional.map((c, i) => (
-              <ContactRow key={i} item={c} />
-            ))}
-          </Grid>
-        </Box>
-
-        {/* Representante */}
-        <Box ref={repRef}>
-          <Text
-            fontFamily="mono"
-                fontSize="11px"
-                letterSpacing="0.28em"
-                textTransform="uppercase"
-                color="brand.orangeLight"
-                mb={5}
-          >
-            Representante de marketing
-          </Text>
-          <Grid templateColumns={{ base: '1fr', md: '1fr' }} gap={4}>
-            {representative.map((c, i) => (
-              <ContactRow key={i} item={c} gold />
-            ))}
-          </Grid>
-        </Box>
+        <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={3}>
+          {cards.map((c) => <ContactCard key={c.name} card={c} />)}
+        </Grid>
       </Box>
     </Box>
   )
