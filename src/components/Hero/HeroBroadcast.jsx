@@ -139,54 +139,27 @@ export default function HeroBroadcast() {
           },
         }}
       >
-        {/* Escritorio: la foto vertical se muestra entera (sin agrandarla) y el
-            resto del ancho se llena con la misma foto desenfocada y oscura */}
+        {/* Foto a todo el ancho. En celular y tablet entra entera a lo alto.
+            En escritorio la foto (vertical, 4:5) se recorta: el recorte arranca
+            justo arriba de la cabeza para que se vea la mayor parte del cuerpo,
+            sin dejar hueco abajo en pantallas muy anchas. */}
         <Image
+          ref={photoRef}
           src={playerData.heroPhoto}
-          alt=""
-          aria-hidden="true"
+          alt={`${playerData.displayName} ${playerData.heroPhotoAlt}`}
+          fetchpriority="high"
           draggable={false}
-          display={{ base: 'none', lg: 'block' }}
           position="absolute"
           inset={0}
           w="100%"
           h="100%"
           objectFit="cover"
-          objectPosition="50% 40%"
-          transform="scale(1.15)"
-          filter="blur(40px) saturate(.7) brightness(.35)"
-        />
-
-        {/* Foto: en celular cubre la pantalla (se ve el cuerpo entero a lo alto);
-            en escritorio va entera, a la derecha del texto */}
-        <Box
-          position="absolute"
-          top={0}
-          bottom={0}
-          right={{ base: 0, lg: '12%' }}
-          left={{ base: 0, lg: 'auto' }}
-          h="100%"
-          sx={{
-            '@media (min-width: 62em)': {
-              aspectRatio: '4 / 5',
-              maskImage: 'linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%)',
-            },
+          objectPosition={{
+            base: '50% 30%',
+            lg: '50% max(-35vw, calc(100 * var(--sv) - 125vw))',
           }}
-        >
-          <Image
-            ref={photoRef}
-            src={playerData.heroPhoto}
-            alt={`${playerData.displayName} ${playerData.heroPhotoAlt}`}
-            fetchpriority="high"
-            draggable={false}
-            w="100%"
-            h="100%"
-            objectFit="cover"
-            objectPosition={{ base: '50% 30%', lg: '50% 50%' }}
-            filter="saturate(.85) contrast(1.05) brightness(.85)"
-          />
-        </Box>
+          filter="saturate(.85) contrast(1.05) brightness(.85)"
+        />
 
         {/* Velos para leer los gráficos */}
         <Box
