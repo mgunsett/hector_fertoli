@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react'
-import { Box, Flex, Text, Link, Image, useToken } from '@chakra-ui/react'
+import { Box, Flex, Text, Link, Image } from '@chakra-ui/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { LiaLaptopCodeSolid } from 'react-icons/lia'
 import { playerData } from '../../data/playerData'
+import sportfolioWeb from '@assets/logo_sport.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -19,7 +19,6 @@ function toTop() {
 
 export default function Footer() {
   const ref = useRef(null)
-  const [devCream] = useToken('colors', ['dev.cream'])
   const word = playerData.fullName
   const cut = Math.max(word.length - 2, 1)
 
@@ -135,21 +134,19 @@ export default function Footer() {
           © 2026 {playerData.displayName} · Todos los derechos reservados
         </Text>
 
-        <Text fontFamily="heading" fontSize="12px" color="brand.bone" letterSpacing="0.05em">
-          Desarrollo Web -{' '}
+        {/* Crédito de desarrollo: logo de Sportfolio, como en todas las landings */}
+        <Flex direction="column" fontSize="12px" color="rgba(255,255,255,0.3)" letterSpacing="0.05em" textTransform="uppercase" fontFamily="heading">
+          Desarrollo Web
           <Link
-            href="https://matiasgunsett.netlify.app/"
+            href="https://matiasgunsett.netlify.app/sportfolio"
             isExternal
-            color="dev.green"
-            _hover={{ borderColor: 'rgba(232,213,163,0.44)', color: 'rgba(232,213,163,0.5)' }}
-            transition="color 0.3s"
-            fontSize="14px"
-            fontFamily="heading"
-            ml="2px"
+            aria-label="Sportfolio Web"
+            transition="opacity 0.3s"
+            _hover={{ opacity: 0.6 }}
           >
-            Matias Gunsett <LiaLaptopCodeSolid style={{ marginLeft: '0px', display: 'inline-block', verticalAlign: 'middle', fontSize: '22px', color: devCream }} />
+            <Image src={sportfolioWeb} alt="Sportfolio Web" display="block" width="85px" height="auto" mx="2px" pt="4px" />
           </Link>
-        </Text>
+        </Flex>
       </Flex>
     </Box>
   )
