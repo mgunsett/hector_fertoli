@@ -164,7 +164,7 @@ export default function HeroBroadcast() {
           objectFit="cover"
           objectPosition={{
             base: '50% 30%',
-            lg: '50% max(-35vw, calc(100 * var(--sv) - 125vw))',
+            lg: '50% max(-5vw, calc(100 * var(--sv) - 125vw))',
           }}
           filter="saturate(.85) contrast(1.05) brightness(.85)"
         />
