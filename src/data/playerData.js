@@ -40,10 +40,6 @@ import image21 from '@assets/gallery/image21.webp'
 import image22 from '@assets/gallery/image22.webp'
 //Video
 import photoGraph from '@assets/perfil_video.webp'
-//Prensa
-import logo1 from '@assets/logos/logo1.webp'
-import logo2 from '@assets/logos/logo2.webp'
-import logo3 from '@assets/logos/logo3.webp'
 //Redes
 import transfermkt from '@assets/contact2.svg'
 import ledsports from '@assets/contact3.webp'
@@ -228,33 +224,6 @@ export const playerData = {
     { id: 22, src: image22, cat: 'c', alt: 'Héctor Fertoli: con la Supercopa Internacional de Racing' },
   ],
 
-  // Prensa: TEXTOS DE EJEMPLO hasta tener las notas reales (medio, titular, fecha, link).
-  // La primera es la nota destacada y usa `photo` de fondo.
-  press: [
-    {
-      outlet: 'ESPN',
-      logo: logo1,
-      title: 'Titular de la nota de ejemplo sobre su llegada a Universitario',
-      date: 'Fecha',
-      summary: 'Bajada de ejemplo: acá va una línea que resume la nota.',
-      url: '#',
-      photo: image13,
-    },
-    {
-      outlet: 'Infobae',
-      logo: logo2,
-      title: 'Titular de ejemplo sobre su rendimiento en la temporada',
-      date: 'Fecha',
-      url: '#',
-    },
-    {
-      outlet: 'CONMEBOL Libertadores',
-      logo: logo3,
-      title: 'Titular de ejemplo sobre su paso por la copa',
-      date: 'Fecha',
-      url: '#',
-    },
-  ],
 
   socialMedia: [
     {
