@@ -26,6 +26,14 @@ const SEASON_BOX = [
 
 const SB_COLS = { base: '78px 40px 56px 40px 1fr', md: '100px 52px 74px 52px 1fr', lg: '100px 52px 74px 52px auto' }
 
+// Escudo cargado desde el panel (Firebase). Si el partido no tiene escudo, la sigla.
+function TeamMark({ team }) {
+  if (team?.shield) {
+    return <Image src={team.shield} alt={team.name} boxSize={{ base: '22px', lg: '28px' }} objectFit="contain" />
+  }
+  return abbr(team?.name)
+}
+
 function ScoreRow({ kind, match }) {
   if (!match) return null
   const isLast = kind === 'last'
@@ -50,7 +58,7 @@ function ScoreRow({ kind, match }) {
         {isLast ? 'Último' : 'Próximo'}
       </Flex>
       <Flex align="center" justify="center" py={{ base: 2, lg: '10px' }} fontSize={{ base: '12px', lg: '14px' }} title={match.home.name}>
-        {abbr(match.home.name)}
+        <TeamMark team={match.home} />
       </Flex>
       <Flex align="center" justify="center" gap="6px" fontSize={{ base: '16px', lg: '20px' }} sx={{ fontVariantNumeric: 'tabular-nums' }}>
         {isLast ? (
@@ -64,7 +72,7 @@ function ScoreRow({ kind, match }) {
         )}
       </Flex>
       <Flex align="center" justify="center" fontSize={{ base: '12px', lg: '14px' }} title={match.away.name}>
-        {abbr(match.away.name)}
+        <TeamMark team={match.away} />
       </Flex>
       <Flex
         align="center"
