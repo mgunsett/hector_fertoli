@@ -3,74 +3,101 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0C0E0A" />
 
-
-    <!-- SEO básico -->
-     <link rel="icon" href="/favicon.svg " />
-    <title>Hector Fértoli | Jugador Profesional </title>
-    <meta name="description" content="Sitio oficial de Hector Fértoli, Mediocampista argentino de Universitario de Perú. Estadísticas, highlights, galería y contacto profesional." />
-    <meta name="keywords" content="Hector Fértoli, mediocampista, Universitario de Perú, LIGA1 PERU, goles fertoli, hector fertoli, fútbol argentino,  goleador, Liga 1, highlights" />
-    <meta name="author" content="Hector Fértoli" />
+    <!-- SEO -->
+    <title>Héctor Fertoli | Mediocampista de Universitario de Deportes</title>
+    <meta name="description" content="Sitio oficial de Héctor Fertoli, mediocampista argentino de Universitario de Deportes en la Liga 1 de Perú. Estadísticas, highlights, galería y contacto." />
+    <meta name="author" content="Héctor Fertoli" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://hector-fertoli.netlify.app/" />
-    
+
+    <!-- Íconos -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
     <!-- Open Graph -->
     <meta property="og:type" content="profile" />
-    <meta property="og:title" content="Hector Fértoli — Jugador Profesional" />
-    <meta property="og:description" content="Estadísticas, highlights y galería del mediocampista argentino de Universitario de Perú." />
-    <meta property="og:url" content="https://hector-fertoli.netlify.app/" />
-    <meta property="og:image" content="https://hector-fertoli.netlify.app/og-image.webp" />
+    <meta property="og:site_name" content="Héctor Fertoli" />
     <meta property="og:locale" content="es_AR" />
-    <meta property="og:site_name" content="Hector Fértoli — Sitio Oficial" />
+    <meta property="og:url" content="https://hector-fertoli.netlify.app/" />
+    <meta property="og:title" content="Héctor Fertoli | Mediocampista de Universitario" />
+    <meta property="og:description" content="Mediocampista argentino de Universitario de Deportes. Estadísticas de la temporada, highlights, galería y contacto profesional." />
+    <meta property="og:image" content="https://hector-fertoli.netlify.app/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Héctor Fertoli, mediocampista de Universitario de Deportes" />
+    <meta property="profile:first_name" content="Héctor" />
+    <meta property="profile:last_name" content="Fertoli" />
 
-    <!-- Twitter Card -->
+    <!-- X / Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Hector Fértoli — Jugador Profesional" />
-    <meta name="twitter:description" content="Sitio oficial del mediocampista argentino de Universitario de Perú. Estadísticas, highlights y contacto." />
-    <meta name="twitter:image" content="https://hector-fertoli.netlify.app/og-image.webp" />
+    <meta name="twitter:title" content="Héctor Fertoli | Mediocampista de Universitario" />
+    <meta name="twitter:description" content="Mediocampista argentino de Universitario de Deportes. Estadísticas, highlights, galería y contacto." />
+    <meta name="twitter:image" content="https://hector-fertoli.netlify.app/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Héctor Fertoli, mediocampista de Universitario de Deportes" />
 
-    <!-- Schema.org JSON-LD -->
+    <!-- Datos estructurados -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Hector Fértoli",
-      "alternateName": "Hector Fértoli",
-      "jobTitle": "Futbolista Profesional",
-      "description": "Mediocampista argentino que actualmente juega en Universitario de Perú, Liga 1." ,
-      "nationality": {
-        "@type": "Country",
-        "name": "Argentina"
-      },
-      "birthDate": "1994-12-03",
-      "birthPlace": {
-        "@type": "Place",
-        "name": "El Trébol, Argentina"
-      },
-      "height": "1.74 m",
-      "weight": "67 kg",
-      "affiliation": {
-        "@type": "SportsTeam",
-        "name": "Universitario de Perú",
-        "sport": "Fútbol"
-      },
-      "url": "https://hector-fertoli.netlify.app/",
-      "sameAs": [
-        "https://www.instagram.com/hector.fertoli/",
-        "https://www.transfermarkt.com.ar/hector-fertoli/profil/spieler/337921"
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://hector-fertoli.netlify.app/#website",
+          "url": "https://hector-fertoli.netlify.app/",
+          "name": "Héctor Fertoli",
+          "inLanguage": "es"
+        },
+        {
+          "@type": "ProfilePage",
+          "@id": "https://hector-fertoli.netlify.app/#profile",
+          "url": "https://hector-fertoli.netlify.app/",
+          "name": "Héctor Fertoli | Mediocampista de Universitario de Deportes",
+          "isPartOf": { "@id": "https://hector-fertoli.netlify.app/#website" },
+          "mainEntity": { "@id": "https://hector-fertoli.netlify.app/#person" },
+          "primaryImageOfPage": "https://hector-fertoli.netlify.app/og-image.jpg",
+          "inLanguage": "es"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://hector-fertoli.netlify.app/#person",
+          "name": "Héctor Fertoli",
+          "givenName": "Héctor",
+          "familyName": "Fertoli",
+          "jobTitle": "Futbolista profesional, mediocampista",
+          "description": "Mediocampista argentino. Juega en Universitario de Deportes, en la Liga 1 de Perú, a préstamo de Racing Club.",
+          "image": "https://hector-fertoli.netlify.app/og-image.jpg",
+          "url": "https://hector-fertoli.netlify.app/",
+          "birthDate": "1994-12-03",
+          "birthPlace": { "@type": "Place", "name": "El Trébol, Santa Fe, Argentina" },
+          "nationality": { "@type": "Country", "name": "Argentina" },
+          "height": { "@type": "QuantitativeValue", "value": 1.74, "unitCode": "MTR" },
+          "weight": { "@type": "QuantitativeValue", "value": 67, "unitCode": "KGM" },
+          "memberOf": {
+            "@type": "SportsTeam",
+            "name": "Universitario de Deportes",
+            "sport": "Fútbol",
+            "location": "Lima, Perú"
+          },
+          "sameAs": [
+            "https://www.instagram.com/rayofertoli/",
+            "https://www.transfermarkt.com.ar/hector-fertoli/profil/spieler/424024",
+            "https://www.fotmob.com/es-419/players/725782/hector-fertoli"
+          ]
+        }
       ]
     }
     </script>
-
-    <!-- Fuentes -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Shadows+Into+Light&family=Space+Grotesk:wght@300..700&family=Syne:wght@800&display=swap" rel="stylesheet">
   </head>
   <body>
+    <noscript>
+      <h1>Héctor Fertoli</h1>
+      <p>Mediocampista argentino de Universitario de Deportes (Liga 1, Perú), a préstamo de Racing Club. Clubes: Universitario, Tigre, Huracán, Talleres de Córdoba, Racing Club, San Lorenzo y Newell's Old Boys.</p>
+      <p>Contacto: <a href="https://www.instagram.com/rayofertoli/">Instagram @rayofertoli</a> · <a href="https://www.transfermarkt.com.ar/hector-fertoli/profil/spieler/424024">Transfermarkt</a></p>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
