@@ -1,3 +1,6 @@
+:root { --sv: 1vh; }
+@supports (height: 1svh) { :root { --sv: 1svh; } }
+
 
 
 @keyframes float {

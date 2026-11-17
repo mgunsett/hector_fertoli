@@ -11,6 +11,8 @@ import './styles/globals.css'
 import './styles/nippo.css'
 
 gsap.registerPlugin(ScrollTrigger)
+// Evita recalcular los triggers cuando aparece/desaparece la barra del navegador en mobile
+ScrollTrigger.config({ ignoreMobileResize: true })
 
 const lenis = new Lenis({
   duration:       1.2,

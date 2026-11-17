@@ -12,6 +12,8 @@ import { DossierStats } from './DossierStats.jsx'
 import { RingsStats } from './RingsStats.jsx'
 import { ClubsVertical } from './ClubsVertical.jsx'
 import { ClubsCards } from './ClubsCards.jsx'
+import { RadarCenterStats } from './RadarCenterStats.jsx'
+import { ClubsGrid } from './ClubsGrid.jsx'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -19,14 +21,16 @@ gsap.registerPlugin(ScrollTrigger)
 //  'bento'   → original de 3 columnas (datos / temporada / habilidades)
 //  'radar'   → radar hexagonal con perfil y temporada a los lados
 //  'dossier' → informe de scouting
-//  'anillos' → anillos de progreso circulares (nuevo)
-const STATS_DESIGN = 'anillos'
+//  'anillos' → anillos de progreso circulares
+//  'radarCentral' → radar al centro, temporada a los costados y perfil al pie (elegido)
+const STATS_DESIGN = 'radarCentral'
 
 // Diseño de la trayectoria de clubes:
 //  'carrusel' → línea de tiempo horizontal con arrastre (original)
 //  'vertical' → línea de tiempo vertical alternada (nuevo)
-//  'tarjetas' → vitrina horizontal de fichas con barra de progreso (nuevo)
-const CLUBS_DESIGN = 'tarjetas'
+//  'tarjetas' → vitrina horizontal de fichas con barra de progreso
+//  'grilla'   → grilla de escudos con resumen (elegido)
+const CLUBS_DESIGN = 'grilla'
 
 function BioCard() {
   const BIO = [
@@ -553,6 +557,7 @@ export default function StatsSection() {
         {STATS_DESIGN === 'radar' && <RadarStats />}
         {STATS_DESIGN === 'dossier' && <DossierStats />}
         {STATS_DESIGN === 'anillos' && <RingsStats />}
+        {STATS_DESIGN === 'radarCentral' && <RadarCenterStats />}
         {STATS_DESIGN === 'bento' && (
           <Grid
             templateColumns={{ base: '1fr', md: '1fr 1fr', lg: '1fr 1.1fr 1fr' }}
@@ -568,6 +573,7 @@ export default function StatsSection() {
         {CLUBS_DESIGN === 'carrusel' && <ClubTimeline />}
         {CLUBS_DESIGN === 'vertical' && <ClubsVertical />}
         {CLUBS_DESIGN === 'tarjetas' && <ClubsCards />}
+        {CLUBS_DESIGN === 'grilla' && <ClubsGrid />}
       </Box>
     </Box>
   )

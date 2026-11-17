@@ -4,6 +4,7 @@ import { IoMdStats } from 'react-icons/io'
 
 //Hero
 import polaco1 from '@assets/polaco1.webp'
+import heroPhoto from '@assets/hero_fertoli.webp'
 
 import argentina from '@assets/argentina.webp'
 import universitario from '@assets/escudo_univ.webp'
@@ -71,6 +72,8 @@ export const playerData = {
   currentClub: 'Universitario',
   logoCurrentClub: universitario,
   image: polaco1,
+  heroPhoto,
+  heroPhotoAlt: 'conduce la pelota con la camiseta 8 de Universitario',
   
 
   stats: [
@@ -162,6 +165,9 @@ export const playerData = {
       thumbnail: image8,
       cover: image8,
       category: 'Universitario',
+      year: '26',
+      club: 'Universitario',
+      clubLogo: universitario,
     },
     {
       id: 'v3',
@@ -173,10 +179,13 @@ export const playerData = {
       thumbnail: image15,
       cover: image15,
       category: 'Highlights',
+      year: '25',
+      club: 'C.A. Tigre',
+      clubLogo: escudoTigre,
     },
     
     {
-      id: 'v3',
+      id: 'v4',
       instagramId: 'DEYUrsoy4L_',
       title: 'Highlight Huracán \'24',
       fullTitle: 'Hector Fertoli | Asistencias y juego',
@@ -185,6 +194,9 @@ export const playerData = {
       thumbnail: image21,
       cover: image21,
       category: 'Highlights',
+      year: '24',
+      club: 'C.A. Huracán',
+      clubLogo: escudoHuracan,
     },
   ],
 
