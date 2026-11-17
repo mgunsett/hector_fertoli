@@ -81,14 +81,16 @@ export const playerData = {
     { label: 'Visión de Juego',value: 89 },
   ],
 
+  // Liga 1 2026 con Universitario. Fuente: FotMob (actualizado 17/11/2026)
+  seasonLabel: 'Liga 1 2026',
+  seasonShort: '2026',
   seasonStats: [
-    { label: 'Partidos',    value: 49},
-    { label: 'Goles',       value: 2},
-    { label: 'Pases Completos', value: 444},
-    { label: 'Tiros al arco', value: 11},
-    { label: 'Min / Part.', value: "1,480'" },
-    { label: 'Valoración', value: 8.5},
-
+    { label: 'Partidos',          value: 16 },
+    { label: 'Minutos',           value: "579'" },
+    { label: 'Pases Completos',   value: 234 },
+    { label: 'Ocasiones creadas', value: 9 },
+    { label: 'Regates exitosos',  value: 8 },
+    { label: 'Valoración',        value: 6.54 },
   ],
 
   clubs: [

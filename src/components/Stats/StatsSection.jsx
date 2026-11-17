@@ -544,7 +544,7 @@ export default function StatsSection() {
           <Box ref={titleRef}>
             <Text fontFamily='mono' fontSize="10px" color="brand.bone"
                   textTransform="uppercase" letterSpacing="widest" >
-              Temporada 2025 / 2026
+              Temporada {playerData.seasonLabel}
             </Text>
             <Text as="h2" fontFamily='heading' fontWeight="bold" fontSize={{ base: '4xl', lg: '5xl' }}
                   color="brand.amber" lineHeight={1}>

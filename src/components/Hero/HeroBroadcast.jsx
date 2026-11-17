@@ -19,7 +19,7 @@ const season = (label) => playerData.seasonStats.find((s) => s.label.toLowerCase
 
 const SEASON_BOX = [
   { label: 'Partidos', value: season('Partidos') },
-  { label: 'Goles', value: season('Goles') },
+  { label: 'Minutos', value: season('Minutos') },
   { label: 'Pases', value: season('Pases Completos') },
   { label: 'Valoración', value: season('Valoración'), accent: true },
 ].filter((s) => s.value !== undefined)
@@ -274,7 +274,7 @@ export default function HeroBroadcast() {
         >
           <Flex display={{ base: 'none', lg: 'flex' }} justify="space-between" px={4} py={3} fontSize="10px" letterSpacing="0.24em" color="brand.gray">
             <span>Temporada</span>
-            <Text as="span" color="brand.amber">25/26</Text>
+            <Text as="span" color="brand.amber">{playerData.seasonShort}</Text>
           </Flex>
           {SEASON_BOX.map((s, i) => (
             <Flex
