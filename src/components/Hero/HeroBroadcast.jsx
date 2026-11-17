@@ -139,21 +139,54 @@ export default function HeroBroadcast() {
           },
         }}
       >
-        {/* Foto a todo el ancho */}
+        {/* Escritorio: la foto vertical se muestra entera (sin agrandarla) y el
+            resto del ancho se llena con la misma foto desenfocada y oscura */}
         <Image
-          ref={photoRef}
           src={playerData.heroPhoto}
-          alt={`${playerData.displayName} ${playerData.heroPhotoAlt}`}
-          fetchpriority="high"
+          alt=""
+          aria-hidden="true"
           draggable={false}
+          display={{ base: 'none', lg: 'block' }}
           position="absolute"
           inset={0}
           w="100%"
           h="100%"
           objectFit="cover"
-          objectPosition={{ base: '50% 30%', lg: '50% 55%' }}
-          filter="saturate(.8) contrast(1.05) brightness(.8)"
+          objectPosition="50% 40%"
+          transform="scale(1.15)"
+          filter="blur(40px) saturate(.7) brightness(.35)"
         />
+
+        {/* Foto: en celular cubre la pantalla (se ve el cuerpo entero a lo alto);
+            en escritorio va entera, a la derecha del texto */}
+        <Box
+          position="absolute"
+          top={0}
+          bottom={0}
+          right={{ base: 0, lg: '12%' }}
+          left={{ base: 0, lg: 'auto' }}
+          h="100%"
+          sx={{
+            '@media (min-width: 62em)': {
+              aspectRatio: '4 / 5',
+              maskImage: 'linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(90deg, transparent 0%, #000 14%, #000 86%, transparent 100%)',
+            },
+          }}
+        >
+          <Image
+            ref={photoRef}
+            src={playerData.heroPhoto}
+            alt={`${playerData.displayName} ${playerData.heroPhotoAlt}`}
+            fetchpriority="high"
+            draggable={false}
+            w="100%"
+            h="100%"
+            objectFit="cover"
+            objectPosition={{ base: '50% 30%', lg: '50% 50%' }}
+            filter="saturate(.85) contrast(1.05) brightness(.85)"
+          />
+        </Box>
 
         {/* Velos para leer los gráficos */}
         <Box
