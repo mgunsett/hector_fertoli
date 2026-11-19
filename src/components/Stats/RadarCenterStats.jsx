@@ -3,6 +3,8 @@ import { Box, Grid, Text } from '@chakra-ui/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { playerData } from '../../data/playerData'
+import useSeasonStats from '../../hooks/useSeasonStats'
+import { seasonTiles } from '../../lib/seasonTiles'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -90,7 +92,10 @@ function SeasonNumber({ stat, align = 'left', highlight }) {
 
 export function RadarCenterStats() {
   const wrapRef = useRef(null)
-  const { stats, seasonStats } = playerData
+  const { stats } = playerData
+  // Temporada en curso desde API-Football; sin datos, los valores fijos.
+  const season = useSeasonStats()
+  const seasonStats = season ? seasonTiles(season) : playerData.seasonStats
 
   const media = Math.round(stats.reduce((a, s) => a + s.value, 0) / stats.length)
   const half = Math.ceil(seasonStats.length / 2)
@@ -118,7 +123,7 @@ export function RadarCenterStats() {
         .fromTo(q('[data-reveal]'), { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, stagger: 0.06 }, 0.15)
     })
     return () => mm.revert()
-  }, [])
+  }, [season])
 
   return (
     <Box ref={wrapRef}>

@@ -4,6 +4,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { playerData } from '../../data/playerData'
 import useMatches from '../../hooks/useMatches'
+import useSeasonStats from '../../hooks/useSeasonStats'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -23,6 +24,17 @@ const SEASON_BOX = [
   { label: 'Pases', value: season('Pases Completos') },
   { label: 'Valoración', value: season('Valoración'), accent: true },
 ].filter((s) => s.value !== undefined)
+
+// El mismo cuadro con los totales de la temporada en curso (API-Football).
+const isNum = (v) => typeof v === 'number' && Number.isFinite(v)
+function apiSeasonBox(s) {
+  return [
+    { label: 'Partidos', value: s.partidos },
+    { label: 'Minutos', value: isNum(s.minutos) ? `${s.minutos.toLocaleString('es-AR')}'` : null },
+    { label: 'Pases', value: s.pases },
+    { label: 'Valoración', value: isNum(s.rating) ? s.rating.toFixed(1) : null, accent: true },
+  ].filter((t) => t.value !== null && t.value !== undefined)
+}
 
 const SB_COLS = { base: '78px 40px 56px 40px 1fr', md: '100px 52px 74px 52px 1fr', lg: '100px 52px 74px 52px auto' }
 
@@ -91,6 +103,10 @@ function ScoreRow({ kind, match }) {
 }
 
 export default function HeroBroadcast() {
+  // Temporada en curso desde API-Football; sin datos, los valores fijos.
+  const apiSeason = useSeasonStats()
+  const seasonBox = apiSeason ? apiSeasonBox(apiSeason) : SEASON_BOX
+  const seasonYear = apiSeason ? apiSeason.temporada : playerData.seasonShort
   const outerRef = useRef(null)
   const stageRef = useRef(null)
   const photoRef = useRef(null)
@@ -278,13 +294,13 @@ export default function HeroBroadcast() {
           borderTop="3px solid"
           borderColor="brand.amber"
           display={{ base: 'grid', lg: 'block' }}
-          gridTemplateColumns={{ base: `repeat(${SEASON_BOX.length}, 1fr)` }}
+          gridTemplateColumns={{ base: `repeat(${seasonBox.length}, 1fr)` }}
         >
           <Flex display={{ base: 'none', lg: 'flex' }} justify="space-between" px={4} py={3} fontSize="10px" letterSpacing="0.24em" color="brand.gray">
             <span>Temporada</span>
-            <Text as="span" color="brand.amber">{playerData.seasonShort}</Text>
+            <Text as="span" color="brand.amber">{seasonYear}</Text>
           </Flex>
-          {SEASON_BOX.map((s, i) => (
+          {seasonBox.map((s, i) => (
             <Flex
               key={s.label}
               direction={{ base: 'column-reverse', lg: 'row' }}

@@ -7,6 +7,8 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import useScrubReveal from '../../hooks/useScrubReveal'
 import { playerData } from '../../data/playerData'
+import useSeasonStats from '../../hooks/useSeasonStats'
+import { seasonTitle } from '../../lib/seasonTiles'
 import { RadarStats } from './RadarStats.jsx'
 import { DossierStats } from './DossierStats.jsx'
 import { RingsStats } from './RingsStats.jsx'
@@ -514,6 +516,8 @@ function ClubTimeline() {
 }
 
 export default function StatsSection() {
+  // Con totales de la API el título muestra sólo la temporada en curso.
+  const season = useSeasonStats()
   const sectionRef = useRef(null)
   const titleRef   = useRef(null)
 
@@ -544,7 +548,7 @@ export default function StatsSection() {
           <Box ref={titleRef}>
             <Text fontFamily='mono' fontSize="10px" color="brand.bone"
                   textTransform="uppercase" letterSpacing="widest" >
-              Temporada {playerData.seasonLabel}
+              {seasonTitle(season, `Temporada ${playerData.seasonLabel}`)}
             </Text>
             <Text as="h2" fontFamily='heading' fontWeight="bold" fontSize={{ base: '4xl', lg: '5xl' }}
                   color="brand.amber" lineHeight={1}>
